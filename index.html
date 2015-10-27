@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SOFT TURRET</title>
+    <link href="/content/bootstrap.css" rel="stylesheet" />
+    <link href="/content/css/login.css" rel="stylesheet" />
+</head>
+
+<body data-ng-cloak>
+    <header class="navbar" data-ng-controller="NavbarController">
+        <nav class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#/dashboard">
+                    <span class="appTitle">{{ appTitle }}</span>
+                </a>
+            </div>
+            <div class="nav-container" data-uib-collapse="isCollapsed">
+
+                <!-- With menu-highlighter directive -->
+                <ul class="nav navbar-nav nav-pills navBarPadding"
+                    data-menu-highlighter data-highlight-class-name="active">
+                    <li><a href="#/dashboard">Dashboard</a></li>
+                    <li>
+                        <a href="#/login">{{ loginLogoutText }}</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    
+    <section data-ng-view></section>
+    <!-- Angular JAVASCRIPTS -->
+    <script src="/angular-js/lib/angular/angular.js"></script>
+    <script src="/angular-js/lib/angular-route/angular-route.js"></script>
+    <script src="/3rd-party-js/ui-bootstrap-tpls.js"></script>
+    <!--<script src="/angular-js/application.js"></script>-->
+    <script src="/angular-js/controllers/loginController.js"></script>
+    <script src="/angular-js/controllers/navbarController.js"></script>
+    <script src="/angular-js/services/authService.js"></script>
+    <script src="/3rd-party-js/require.js" data-main="/3rd-party-js/main.js"></script>
+</body>
+</html>
