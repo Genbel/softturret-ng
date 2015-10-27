@@ -1,6 +1,6 @@
-/*'use strict';
+'use strict';
 
-define(['app'], function (app) {*/
+define(['app'], function (app) {
 
     var injectParams = ['$scope', '$location', 'authService'];
 
@@ -55,4 +55,4 @@ define(['app'], function (app) {*/
     //Dynamically loaded controller use app.register.controller
     app.controller('NavbarController', NavbarController);
 
-//});
+});

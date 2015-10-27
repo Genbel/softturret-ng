@@ -1,11 +1,13 @@
 require.config({
-    baseUrl: 'public',
-    urlArgs: 'v=1.0'
+    baseUrl: '/angular-js'
 });
 
 require(
     [
-        'application'
+        'app',
+        'controllers/loginController',
+        'controllers/navbarController',
+        'services/authService'
     ],
     function () {
         angular.bootstrap(document, ['softturret']);
