@@ -3,11 +3,13 @@ require.config({
 });
 
 require(
-    [
+    [   
         'app',
-        'controllers/loginController',
+        'services/routeResolver',
+        //'controllers/loginController',
         'controllers/navbarController',
-        'services/authService'
+        'services/authService',
+        'directives/wcAngularOverlay'
     ],
     function () {
         angular.bootstrap(document, ['softturret']);

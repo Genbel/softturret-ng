@@ -6,21 +6,31 @@ var usersCtrl = require('./controllers/users.server.controller'),
 
 // Define all the routes of the app
 var routes = [
+    // WARNING: IN SOME REQUEST WE NEED A requiresLogin function as middleware
     {
         path: '/',
         httpMethod: 'GET',
-        middleware: [usersCtrl.renderSignin]
+        middleware: [usersCtrl.renderIndex]
     },{
-        path: '/login',
+        path: '/api/dataservice/login',
         httpMethod: 'POST',
         middleware: [usersCtrl.login]
+    },{
+        path: '/api/dataservice/logout',
+        httpMethod: 'POST',
+        middleware: [usersCtrl.logout]
+    },{
+        path: '/api/dataservice/signup',
+        httpMethod: 'POST',
+        middleware: [usersCtrl.signup]
     }
 ];
 // Encapsulates app routes management code into a single unit of code
 module.exports = function(app) {
     
     _.each(routes, function(route) {
-        //route.middleware.unshift(ensureAuthorized);
+        // We can work on that later
+        // route.middleware.unshift(ensureAuthorized);
         var args = _.flatten([route.path, route.middleware]);
 
         switch(route.httpMethod.toUpperCase()) {

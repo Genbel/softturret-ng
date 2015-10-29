@@ -7,11 +7,11 @@
 </head>
 
 <body data-ng-cloak>
-    <header class="navbar" data-ng-controller="NavbarController">
+    <header class="navbar" data-ng-controller="NavbarController as vm">
         <nav class="container">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#/dashboard">
-                    <span class="appTitle">{{ appTitle }}</span>
+                    <span class="appTitle">{{ vm.appTitle }}</span>
                 </a>
             </div>
             <div class="nav-container" data-uib-collapse="isCollapsed">
@@ -20,8 +20,9 @@
                 <ul class="nav navbar-nav nav-pills navBarPadding"
                     data-menu-highlighter data-highlight-class-name="active">
                     <li><a href="#/dashboard">Dashboard</a></li>
-                    <li>
-                        <a href="#/login">{{ loginLogoutText }}</a>
+                    <li data-ng-click="vm.loginOrOut()">
+                        <!-- href not used but needed to compare against path in menu-highlighter -->
+                        <a data-href="#/login">{{ vm.loginLogoutText }}</a>
                     </li>
                 </ul>
             </div>
@@ -29,6 +30,10 @@
     </header>
     
     <section data-ng-view></section>
+    
+    <div wc-overlay wc-overlay-delay="300">
+        <img src="../Content/img/ajaxSpinner.gif" />
+    </div>
     <!-- Angular JAVASCRIPTS -->
     <script src="/angular-js/lib/angular/angular.js"></script>
     <script src="/angular-js/lib/angular-route/angular-route.js"></script>

@@ -4,100 +4,34 @@
 var User = require('mongoose').model('User'),
     passport = require('passport');
 
-var getErrorMessage = function(err) {
-    // Define error message variable
-    var message = '';
-    
-    // If mongoDB error occur get the message. That error is in the code variable
-    if (err.code) {
-        switch (err.code) {
-            // If unique index error occur, configure error message
-            case 11000:
-            case 11001:
-                message = 'User already exist';
-                break;
-            // If the error is general, configure
-            default:
-                message = 'An error has occurred!';
-        }
-    } else {
-        // Store the error in the error list. We will get always the first error from the form.
-        for (var errName in err.errors) {
-            if (err.errors[errName].message) message = err.errors[errName].message;
-        }
-    }
-    
-    // return error message
-    return message;
-};
-
-
 // Renders the signin page
-exports.renderSignin = function(req, res, next) {
-    // If the user is not sign in render sign in page,
-    // else render the root page
-    /*if (!req.user) {
-        // Use the response object to render the signin page
-        res.render('signin', {
-            // Configure the tile variable
-            title: 'Sign-in Form',
-            // Configure the flash message
-            messages: req.flash('error') || req.flash('info')
-        });
-    } else {
-        return res.redirect('/panel');
-    }*/
+exports.renderIndex = function(req, res, next) {
     
     res.render('index');
-};
-
-exports.renderSignup = function(req, res) {
-    res.render('signup');
 };
 
 exports.signup = function(req, res, next) {
-    // The user is not connected, create and make login to the new user
-    if (!req.user) {
-        // Create new instance of the user
-        // req.body: holds parameters that are sent up from the client as part of a POST request
-        // The form input name and model atributes names has to be the same, if we want to add
-        // correctly data in the collection
-        var user = new User(req.body);
-        var message = null;
-        
-        // Config the provider
-        user.provider = 'local';
-        // Save the new user
-        user.save(function(err) {
-            // There is an error, flash the erro
-            if (err) {
-                var message = getErrorMessage(err);
-                // Configure the flash messages
-                req.flash('error', message);
-                // Redirect again to the signUp page
-                return res.redirect('/signup');
-            }
-            // If the user was created correct, use the passport method to make the login
-            // When the login operation completes, user will be assigned to req.user.
-            /* Delete password and salt atributes. I cannot do because there is a serialize error
-            user = user.toObject();
-            delete user['password'];
-            delete user.salt;*/
-            req.login(user, function(err) {
-                console.log("reqUser json" + req.user);
-                // If there is an error logging go to the next middleware
-                if (err) return next(err);
-                // Redirect to the main page    
-                return res.redirect('/panel');
-            });
-        });
-    } else {
-        return res.redirect('/');
-    }
-};
+    // Create new instance of the user
+    // req.body: holds parameters that are sent up from the client as part of a POST request
+    // The form input name and model atributes names has to be the same, if we want to add
+    // correctly data in the collection
+    var user = new User(req.body);
 
-exports.renderPanel = function(req, res) {
-    res.render('index');
+    // Save the new user
+    user.save(function(err) {
+        // There is an error, flash the erro
+        if (err) { 
+            return res.status(200).json({"type": "db", "message" : getErrorMessage(err)});
+        }
+        // If the user was created correct, use the passport method to make the login
+        // When the login operation completes, user will be assigned to req.user.
+        req.login(user, function(err) {
+            // If there is an error logging go to the next middleware
+            if (err) res.status(200).json({"type": "login", "message" : "The system couldn't do the auto-login."});
+            // Send back the message
+            return res.status(200).json({"type": "login-ok", "message" : "The system couldn't do the auto-login."});
+        });
+    });
 };
 
 // METHOD: POST
@@ -124,5 +58,55 @@ exports.login = function(req, res, next){
     })(req, res, next);
     
 }
+
+// Crear un nuevo método controller para signing out
+exports.logout = function(req, res) {
+    // Usa el método 'logout' de Passport para hacer logout
+    req.logout();
+    // Send back the respond
+    res.status(200).json({"message":"Successful logout"});
+};
+
+// Crear un nuevo middleware controller que es usado para autorizar operaciones de autentificación 
+exports.requiresLogin = function(req, res, next) {
+  // Si un usuario no está autentificado envía el mensaje de error apropiado
+  if (!req.isAuthenticated()) {
+    return res.status(401).send({
+      message: 'User is not authenticated'
+    });
+  }
+
+  // Llamar al siguiente middleware
+  next();
+};
+
+
+
+var getErrorMessage = function(err) {
+    // Define error message variable
+    var message = '';
+    
+    // If mongoDB error occur get the message. That error is in the code variable
+    if (err.code) {
+        switch (err.code) {
+            // If unique index error occur, configure error message
+            case 11000:
+            case 11001:
+                message = 'Duplicate key: Username or company already exist';
+                break;
+            // If the error is general, configure
+            default:
+                message = 'An error has occurred while saving!';
+        }
+    } else {
+        // Store the error in the error list. We will get always the first error from the form.
+        for (var errName in err.errors) {
+            if (err.errors[errName].message) message = err.errors[errName].message;
+        }
+    }
+    
+    // return error message
+    return message;
+};
     
     

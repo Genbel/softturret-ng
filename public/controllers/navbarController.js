@@ -5,25 +5,24 @@ define(['app'], function (app) {
     var injectParams = ['$scope', '$location', 'authService'];
 
     var NavbarController = function ($scope, $location, authService) {
-
         
-        $scope.appTitle = 'Softurret';
-
-        /*vm.highlight = function (path) {
-            return $location.path().substr(0, path.length) === path;
-        };
-
-        */$scope.loginOrOut = function () {
+        var vm = this;
+        
+        vm.appTitle = 'Soffturret';
+        
+        vm.loginOrOut = function () {
             setLoginLogoutText();
             var isAuthenticated = authService.user.isAuthenticated;
-            console.log('kaixo');
-            if (isAuthenticated) { //logout 
+            // logout action
+            if (isAuthenticated) { 
                 authService.logout().then(function () {
                     $location.path('/');
                     return;
                 });
+            }else {
+                // login action
+                redirectToLogin();
             }
-            redirectToLogin();
         };
 
         function redirectToLogin() {
@@ -33,7 +32,7 @@ define(['app'], function (app) {
         }
 
         $scope.$on('loginStatusChanged', function (loggedIn) {
-            setLoginLogoutText(loggedIn);
+            setLoginLogoutText();
         });
 
         $scope.$on('redirectToLogin', function () {
@@ -41,7 +40,7 @@ define(['app'], function (app) {
         });
 
         function setLoginLogoutText() {
-            $scope.loginLogoutText = (authService.user.isAuthenticated) ? 'Logout' : 'Login';
+            vm.loginLogoutText = (authService.user.isAuthenticated) ? 'Logout' : 'Login';
         }
 
         setLoginLogoutText();
@@ -53,6 +52,7 @@ define(['app'], function (app) {
 
     //Loaded normally since the script is loaded upfront 
     //Dynamically loaded controller use app.register.controller
+    // app = angular.module('softturret, ...)
     app.controller('NavbarController', NavbarController);
 
 });

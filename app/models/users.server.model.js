@@ -10,10 +10,13 @@ var Schema = mongoose.Schema;
 // Define new 'UserSchema'
 var UserSchema = new Schema({
     
-    Company: String,
+    company: {
+        type: String,
+        unique:true
+    },
     email:{ 
         type: String,
-        match: [/.+\@.+\..+/, "Please fill a valid e-mail addrss"]
+        match: [/.+\@.+\..+/, "Please fill a valid e-mail address"]
     },
     username: {
         type: String,
