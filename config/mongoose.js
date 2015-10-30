@@ -1,10 +1,51 @@
+'use strict';
+
 var config = require('./config'),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    Q = require('q');
 
 module.exports = function() {
-    var db = mongoose.connect(config.db);
-    // Charge our 'User' model
-    require('../app/models/users.server.model');
+    
+    var deferred = Q.defer();
+    
+    var setupConfiguration = function() {
+        
+        var connection = 'mongodb://'+ config.db.username +':'+ config.db.password +'@' + config.db.host + ':'+ config.db.port +'/'+ config.db.dbName;
+    
+        var db = mongoose.connect(connection);
+
+        // Charge our 'User' model
+        require('../app/models/users.server.model');
+
+        // CONNECTION EVENTS
+        // When successfully connected
+        db.connection.on('connected', function () {
+            deferred.resolve(db);
+            console.log('Mongoose default connection open');
+        }); 
+
+        // If the connection throws an error
+        db.connection.on('error',function (err) {
+            deferred.reject(err);
+        }); 
+
+        // When the connection is disconnected
+        db.connection.on('disconnected', function () {  
+          console.log('Mongoose default connection disconnected'); 
+        });
+
+        // If the Node process ends, close the Mongoose connection 
+        process.on('SIGINT', function() {  
+          db.connection.close(function () { 
+            console.log('Mongoose default connection disconnected through app termination'); 
+            process.exit(0); 
+          }); 
+        });
+        return db;
+    };
+    
+    var db = setupConfiguration();
+    
     // Return the mongoose database instance
-    return db;
+    return deferred.promise;
 };

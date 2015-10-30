@@ -1,4 +1,7 @@
-var config = require('./config'), // config file. It seems we don't need to add the extension
+'use strict';
+
+var config = require('./config'),
+    webRTCSocket = require('./webRTC.socket'),
     session = require('express-session'),
     express = require('express'),
     morgan = require('morgan'),
@@ -6,21 +9,45 @@ var config = require('./config'), // config file. It seems we don't need to add 
     bodyParser = require('body-parser'),
     methodOverride = require('method-override'),
     passport = require('passport'),
-    flash = require('connect-flash');
+    flash = require('connect-flash'),
+    io = require('socket.io'),
+    http = require('http'),
+    https = require('https'),
+    Q = require('q'),
+    fs = require('fs');
 
 // Encapsulates express application configuration code into a single unit of code
-module.exports = function() {
-
-	var app = express();
+module.exports = function(config) {
+     
+    var deferred = Q.defer(),
+        server,
+        socket,
+        app = express();
+    
     // Set the environment
-	if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development') {
         app.use(morgan('dev'));
     }
-    
+
     /*// In production don't do that
     } else if (process.env.NODE_ENV === 'production') {
         app.use(compress());
     }*/
+    // Set up the server method for our express: HTTP or HTTPS 
+    if(!config.server.enableHTTPS) {
+        server = http.createServer(app);
+    } else {
+        var options = {
+	       key: fs.readFileSync('./config/ssl/key.pem'),
+	       cert: fs.readFileSync('./config/ssl/key-cert.pem'),
+        }
+        server = https.createServer(options, app);
+    }
+    
+    // Set up the socket
+    io = io.listen(server);
+    
+    socket = webRTCSocket(io);
     
     app.use(bodyParser.urlencoded({
         extended: true
@@ -34,13 +61,13 @@ module.exports = function() {
     app.use(session({
         saveUninitialized: true,
         resave: true,
-        secret: config.sessionSecret
+        secret: config.session.secretToken
     }));
     // Set our view folder
     app.set('views', './app/views');
     // Set our template engine
     app.set('view engine', 'ejs');
-    
+
     // To flash messages
     app.use(flash());
     // Middleware
@@ -48,7 +75,7 @@ module.exports = function() {
     app.use(passport.initialize());
     // It will use express session to maintain all info about user session
     app.use(passport.session());
-    
+
     require('../app/routes.js')(app);
     // Add middleware to serve static files. 
     // Set the location of that files
@@ -58,8 +85,16 @@ module.exports = function() {
     app.use('/3rd-party-js',express.static('./Scripts'));
     app.use('/angular-js', express.static('./public'));
     app.use('/content', express.static('./Content'));
+    app.use('/root', express.static('./'));
+    var thisObj = {
+        server: server,
+        app: app,
+        socket: socket
+    }
+        
+    deferred.resolve(thisObj);
     
-    
-    return app;
+    return deferred.promise;
 
 };
+    

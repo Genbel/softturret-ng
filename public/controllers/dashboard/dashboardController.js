@@ -2,13 +2,20 @@
 
 define(['app'], function(app) {
     
-    var injectParams = ['$location', 'authService'];
+    var injectParams = ['$location', 'authService', 'webRTCSocketService'];
 
-    var DashboardController = function($location, authService) {
+    var DashboardController = function($location, authService, webRTCSocketService) {
         
-        var vm = this;
+        var socket = webRTCSocketService.socket;
         
-        vm.yes = 'Gematech.com';
+        //socket.connect();
+        
+        socket.emit('welcome', webRTCSocketService.username);
+        
+        socket.on('Hi', function(){
+            console.log('You get good feed back from the server');
+        });
+        
     };
 
     DashboardController.$inject = injectParams;

@@ -1,0 +1,26 @@
+{
+    "session": {
+        "secretToken": "o@:&M<ZN PF(s.T)3?*;^1~TDjNE}=3xy$SpB7dE%dA-}fAn.b[RRU{cg+P#[):/"
+    },
+    "db": {
+        "username": "pbxadmin",
+        "password": "LabyrintH",
+        "host": "ds043714.mongolab.com",
+        "port": "43714",
+        "dbName": "softturret"
+    },
+    "server": {
+        "enableHTTPS": true,
+        "schema": "https",
+        "domain": "192.168.0.2",
+        "httpPort": 8080,
+        "httpsPort": 443
+    },
+    "ssl": {
+        "enable": false,
+        "privateKey": "",
+        "certificate": "",
+        "certificateAuthority": ""
+    }
+}
+

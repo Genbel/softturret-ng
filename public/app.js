@@ -4,7 +4,7 @@ define(['services/routeResolver'], function(){
     
     var appName = 'softturret';
 
-    var app = angular.module(appName,['ngRoute', 'ui.bootstrap', 'routeResolverServices', 'wc.Directives']);
+    var app = angular.module(appName,['ngRoute', 'ui.bootstrap', 'routeResolverServices', 'wc.Directives', 'btford.socket-io']);
 
     app.config(['$routeProvider', 'routeResolverProvider', '$controllerProvider',
                 '$compileProvider', '$filterProvider', '$provide', '$httpProvider',

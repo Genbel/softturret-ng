@@ -6,9 +6,9 @@ require(
     [   
         'app',
         'services/routeResolver',
-        //'controllers/loginController',
         'controllers/navbarController',
         'services/authService',
+        'services/webRTCSocketService',
         'directives/wcAngularOverlay'
     ],
     function () {
