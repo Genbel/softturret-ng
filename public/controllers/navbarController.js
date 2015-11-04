@@ -2,11 +2,13 @@
 
 define(['app'], function (app) {
 
-    var injectParams = ['$scope', '$location', 'authService'];
+    var injectParams = ['$scope', '$location', 'authService', 'webRTCSocketService'];
 
-    var NavbarController = function ($scope, $location, authService) {
+    var NavbarController = function ($scope, $location, authService, webRTCSocketService) {
         
         var vm = this;
+        
+        var socket = webRTCSocketService.socket;
         
         vm.appTitle = 'Soffturret';
         
@@ -17,6 +19,7 @@ define(['app'], function (app) {
             if (isAuthenticated) { 
                 authService.logout().then(function () {
                     $location.path('/');
+                    resetTheSocket();
                     return;
                 });
             }else {
@@ -38,6 +41,22 @@ define(['app'], function (app) {
         $scope.$on('redirectToLogin', function () {
             redirectToLogin();
         });
+        
+        $scope.$on('setAppLocation', function(event, args) {
+            console.log(args);
+            vm.appTitle = args;
+        });
+        
+        function resetTheSocket() {
+            socket.emit('logout');
+            // Set up the initial values
+            webRTCSocketService.username = null;
+            webRTCSocketService.initiator = false;
+            webRTCSocketService.remotePeerSId = null;
+            webRTCSocketService.initiatorUsername = null;
+            webRTCSocketService.uuid = null;
+            socket.removeListener();
+        }
 
         function setLoginLogoutText() {
             vm.loginLogoutText = (authService.user.isAuthenticated) ? 'Logout' : 'Login';

@@ -33,6 +33,7 @@ define(['services/routeResolver'], function(){
                 //Thanks to Ton Yeung for the idea and contribution
                 .when('/login', route.resolve('Login', '', 'vm'))
                 .when('/dashboard', route.resolve('Dashboard', 'dashboard/', 'vm', true))
+                .when('/webrtc', route.resolve('Webrtc', 'webrtc/', 'vm', true))
                 .when('/signup', route.resolve('Signup','','vm'))
                 .otherwise({ redirectTo: '/dashboard' });
     }]);

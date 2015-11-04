@@ -8,21 +8,26 @@ define(['app'], function(app) {
         
         var vm = this;
         
-        var socket = webRTCSocketService.socket;
-        socket.connect();
+        /*var socket = webRTCSocketService.socket;
+        // User connect to the server when request the login
+        if(webRTCSocketService.connected === false) {
+            console.log('socket connected');
+            webRTCSocketService.connected = true;
+            socket.connect();
+        }*/
         
         vm.username = null;
         vm.password = null;
         vm.errorMessage = null;
-
+        
+        // Login the user in the system.
         vm.login = function() {
             
             webRTCSocketService.username = vm.username;
-            
+            // Use our authentication service to login the user using RESTFul protocol
             authService.login({username: vm.username, password: vm.password})
                 .then(function(status){
                     if(!status.authenticated){
-                        console.log(status.message);
                         vm.errorMessage = status.message;
                     }else{
                         $location.path('/dashboard');
@@ -34,9 +39,15 @@ define(['app'], function(app) {
             ;
         };
     };
+    
+    
 
     LoginController.$inject = injectParams;
     // We add controller like this because we do dinamically
     app.register.controller('LoginController', LoginController);
 });
+
+function printMessage(message){
+    console.log('controller sends you, kaixo ' + message);
+}
     

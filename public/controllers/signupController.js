@@ -8,10 +8,10 @@ define(['app'], function(app) {
         
         var vm = this;
         
-        vm.company = 'Gematech';
-        vm.email = 'gematech@info.com';
-        vm.username = 'Keitha';
-        vm.password = 'Keith0000';
+        vm.company = null;
+        vm.email = null;
+        vm.username = null;
+        vm.password = null;
         vm.erroMessage = null;
         
         vm.signup = function() {

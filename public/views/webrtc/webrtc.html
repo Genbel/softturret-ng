@@ -1,0 +1,25 @@
+<div class="view">
+    <div class="container">
+        <h4>webRTC connection between peers</h4>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-2">
+                    <h5><i class="fa fa-volume-up"></i>&nbsp;&nbsp;{{ vm.username }}</h5>
+                </div>
+                <div class="col-md-5">
+                    <h5 style="font-size:10px">{{ vm.roomUUID }}</h5>
+                </div>
+                <div class="col-md-2">
+                    <h5>{{ vm.remoteUser }}</h5>
+                </div>
+                <div class="col-md-offset-1 col-md-1">
+                    <button class="btn btn-hangup" ng-click="vm.hangup()"><i class="fa fa-phone fa-rotate-90"></i></button>
+                </div>
+                
+            </div>
+            <div class="col-md-12">
+                <audio preload="auto" controls autoplay id="remoteAudio"></audio>
+            </div>
+        </div>
+    </div>
+</div>

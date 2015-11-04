@@ -1,8 +1,4 @@
-body {
-  padding-top: 40px;
-  padding-bottom: 40px;
-  background-color: #eee;
-}
+// Login Stylesheet
 
 .form-signin {
   max-width: 330px;
@@ -38,12 +34,3 @@ body {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-
-/* ng-cloak */
-[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng.ng-cloak {
-    display: none;
-}
-
-.overlayContainer { display: none;}
-.overlayBackground { top:0px; left:0px; padding-left:100px;position:absolute;z-index:1000;height:100%;width:100%;background-color:#808080;opacity:0.3;}
-.overlayContent { position:absolute; background-color:#fff;font-weight: bold;height: 50px;width: 50px;z-index:1000;text-align:center;}

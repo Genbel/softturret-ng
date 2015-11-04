@@ -1,0 +1,15 @@
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: $background-color;
+}
+
+/* ng-cloak */
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng.ng-cloak {
+    display: none;
+}
+
+// When we have RESTful calls it displays as a spinner
+.overlayContainer { display: none;}
+.overlayBackground { top:0px; left:0px; padding-left:100px;position:absolute;z-index:1000;height:100%;width:100%;background-color:#808080;opacity:0.3;}
+.overlayContent { position:absolute; background-color:#fff;font-weight: bold;height: 50px;width: 50px;z-index:1000;text-align:center;}

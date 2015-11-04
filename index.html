@@ -3,7 +3,9 @@
 <head>
     <title>SOFT TURRET</title>
     <link href="/content/bootstrap.css" rel="stylesheet" />
-    <link href="/content/css/login.css" rel="stylesheet" />
+    <link href="/content/stylesheet/css/main.css" rel="stylesheet" />
+    <link href="/angular-js/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="/angular-js/lib/font-awesome/fonts/fontawesome-webfont.woff2" />
 </head>
 
 <body data-ng-cloak>
@@ -20,6 +22,7 @@
                 <ul class="nav navbar-nav nav-pills navBarPadding"
                     data-menu-highlighter data-highlight-class-name="active">
                     <li><a href="#/dashboard">Dashboard</a></li>
+                    <li><a href="#/webrtc">webRTC connection</a></li>
                     <li data-ng-click="vm.loginOrOut()">
                         <!-- href not used but needed to compare against path in menu-highlighter -->
                         <a data-href="#/login">{{ vm.loginLogoutText }}</a>

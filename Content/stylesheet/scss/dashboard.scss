@@ -1,0 +1,8 @@
+.btn-dial {
+    @include panel-control-buttons($dial-color, 50px, 10px, white);}
+
+.btn-busy {
+    @include panel-control-buttons($busy-color, 50px, 10px, white);}
+
+.btn-hangup {
+    @include panel-control-buttons($hangup-color, 50px, 10px, white);}

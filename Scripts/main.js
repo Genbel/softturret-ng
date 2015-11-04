@@ -1,5 +1,6 @@
 require.config({
-    baseUrl: '/angular-js'
+    baseUrl: '/angular-js',
+    waitSeconds: 200
 });
 
 require(
@@ -7,8 +8,10 @@ require(
         'app',
         'services/routeResolver',
         'controllers/navbarController',
+        'services/modalService',
         'services/authService',
         'services/webRTCSocketService',
+        'lib/adapter',
         'directives/wcAngularOverlay'
     ],
     function () {
