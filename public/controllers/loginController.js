@@ -23,7 +23,7 @@ define(['app'], function(app) {
         // Login the user in the system.
         vm.login = function() {
             
-            webRTCSocketService.username = vm.username;
+            authService.user.name = vm.username;
             // Use our authentication service to login the user using RESTFul protocol
             authService.login({username: vm.username, password: vm.password})
                 .then(function(status){
@@ -46,8 +46,4 @@ define(['app'], function(app) {
     // We add controller like this because we do dinamically
     app.register.controller('LoginController', LoginController);
 });
-
-function printMessage(message){
-    console.log('controller sends you, kaixo ' + message);
-}
     

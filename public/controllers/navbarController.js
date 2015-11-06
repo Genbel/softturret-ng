@@ -11,6 +11,7 @@ define(['app'], function (app) {
         var socket = webRTCSocketService.socket;
         
         vm.appTitle = 'Soffturret';
+        vm.show = true; 
         
         vm.loginOrOut = function () {
             setLoginLogoutText();
@@ -47,15 +48,19 @@ define(['app'], function (app) {
             vm.appTitle = args;
         });
         
+        $scope.$on('trading', function(event, args) {
+            vm.show = args;
+        });
+        
         function resetTheSocket() {
             socket.emit('logout');
             // Set up the initial values
             webRTCSocketService.username = null;
             webRTCSocketService.initiator = false;
+            webRTCSocketService.joinerUsername = null;
             webRTCSocketService.remotePeerSId = null;
-            webRTCSocketService.initiatorUsername = null;
+            webRTCSocketService.remotePeerUsername = null;
             webRTCSocketService.uuid = null;
-            socket.removeListener();
         }
 
         function setLoginLogoutText() {
@@ -63,6 +68,10 @@ define(['app'], function (app) {
         }
 
         setLoginLogoutText();
+        
+        $scope.$on('$destroy', function(){
+            socket.disconnect();
+        });
 
     };
 

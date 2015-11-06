@@ -2,19 +2,20 @@
 
 define(['app'], function(app) {
     
-    var injectParams = ['$rootScope','$location', 'authService', 'webRTCSocketService'];
+    var injectParams = ['$scope', '$rootScope','$location', 'authService', 'webRTCSocketService'];
 
-    var WebrtcController = function($rootScope, $location, authService, webRTCSocketService) {
+    var WebrtcController = function($scope, $rootScope, $location, authService, webRTCSocketService) {
         
         var vm = this;
         
         vm.username = webRTCSocketService.username;
         vm.remoteUser = webRTCSocketService.remotePeerUsername;
         vm.roomUUID = webRTCSocketService.uuid;
+        vm.trading = false;
         
         // Reset call configuration
         vm.hangup = function(){
-            sendMessage('bye');
+            socket.emit('hang-up', {"uuid" : webRTCSocketService.uuid, "remoteSId" : webRTCSocketService.remotePeerSId });
             handleRemoteHangup();
         };
             
@@ -45,17 +46,16 @@ define(['app'], function(app) {
         var isStarted = false;
         // The element where we add the audio
         var remoteAudio = document.getElementById('remoteAudio');
-        console.log(remoteAudio);
         
         
         // Initialize the controller
         function init() {
-            console.log("is started -------------------->       "+ isStarted);
             // The initiator only can trigger the getUserMedia(). If not all the time we will be in that page.
             if(webRTCSocketService.initiator){
                 navigator.getUserMedia(constraints, handleInitiatorUserMedia, handleInitiatorUserMediaError);
             // The joiner accept the call so it has to attach the media.    
             } else {
+                vm.trading = true;
                 navigator.getUserMedia(constraints, handleJoinerUserMedia, handleJoinerUserErrorMedia);
             }
         }
@@ -79,6 +79,7 @@ define(['app'], function(app) {
         // that the joiner gets the media
 		// @stream: media
         function handleJoinerUserMedia(stream) {
+            $rootScope.$broadcast('trading', false);
             isRoomReady = true;
             localStream = stream;
             console.log("Joiner get the media. Ready the room to start negotiation");
@@ -98,15 +99,18 @@ define(['app'], function(app) {
             isRoomReady = true;
         });
         
+        // Global socket message management module
+        // @message: Messages that exchange the two peers that wants to have a conversation
         socket.on('message', function(message){
-            console.log(message);
             if(message === 'got-user-media'){
+                vm.trading = true;
+                $rootScope.$broadcast('trading', false);
+                socket.emit('square-updated');
                 checkAndStart();
             // Remote Peer, in that case the initiator, send description of the SDP via server and the
             // joiner set as RemoteDescription
             } else if (message.type === 'offer') {
                 if (!webRTCSocketService.initiator && !isStarted) {
-                    console.log('offer');
                     checkAndStart();
                 }
                 pc.setRemoteDescription(new RTCSessionDescription(message));
@@ -116,11 +120,15 @@ define(['app'], function(app) {
             } else if (message.type === 'answer' && isStarted) {
                 pc.setRemoteDescription(new RTCSessionDescription(message));
 
-            // They send candidate information to now which is their ICECandidate
+            // They send each other candidates information which is their ICECandidate to connect with the other peer
             } else if(message.type === 'candidate' && isStarted) {
                 var candidate = new RTCIceCandidate({sdpMLineIndex:message.label, candidate:message.candidate});
                 pc.addIceCandidate(candidate);
-            }  else if (message === 'bye' && isStarted) {
+            }
+        });
+        
+        socket.on('hang-up', function(data){
+            if(isStarted) {
                 handleRemoteHangup();
             }
         });
@@ -132,7 +140,7 @@ define(['app'], function(app) {
             var node = {"message" : message, "room" : webRTCSocketService.uuid };
             socket.emit('message', node);
         }
-        // Channel negotiation trigger function
+        // Room negotiation trigger function
         function checkAndStart() {
             if(!isStarted && typeof localStream != 'undefined' && isRoomReady) {
 				createPeerConnection();
@@ -213,13 +221,14 @@ define(['app'], function(app) {
         
         function handleRemoteHangup(){
 			console.log('Session terminated.');
-			stop();
+			restartServices();
             localStream.stop();
-            socket.removeListener()
+            //socket.removeListener()
             $location.path('/dashboard');
+            $rootScope.$broadcast('trading', true);
 		}
 
-		function stop(){
+		function restartServices(){
 			// Remove the media for the Peer connection
 			pc.removeStream(localStream);
 			// Close the peer connection
@@ -236,6 +245,10 @@ define(['app'], function(app) {
 		}
         
         init();
+        
+        $scope.$on('$destroy', function(){
+            socket.removeListener();
+        });
     };
 
     WebrtcController.$inject = injectParams;

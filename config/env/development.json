@@ -12,7 +12,7 @@
     "server": {
         "enableHTTPS": true,
         "schema": "https",
-        "domain": "192.168.0.2",
+        "domain": "10.245.40.55",
         "httpPort": 8080,
         "httpsPort": 443
     },

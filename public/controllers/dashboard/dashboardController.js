@@ -2,16 +2,24 @@
 
 define(['app'], function(app) {
     
-    var injectParams = ['$rootScope','$location', 'authService', 'webRTCSocketService','modalService', '$q'];
+    var injectParams = ['$scope', '$rootScope','$location', 'authService', 'webRTCSocketService','modalService', '$q'];
 
-    var DashboardController = function($rootScope, $location, authService, webRTCSocketService, modalService, $q) {
+    var DashboardController = function($scope, $rootScope, $location, authService, webRTCSocketService, modalService, $q) {
         
         var vm = this;
         vm.list = {};
         
         var socket = webRTCSocketService.socket;
         
+        webRTCSocketService.username = authService.user.name;
+        
         vm.username = webRTCSocketService.username;
+        
+        // There are changes in the square because somebody enter or quit.
+        // @square: Updated info of the square.
+        socket.on('square-updated', function(square){
+            vm.list = square;
+        });
         
         // Peer wants to start the call. It would be initiator
         // @socketId: Joiner socketId
@@ -27,13 +35,9 @@ define(['app'], function(app) {
         socket.on('call-request', function(data) {
             modalService.show({},{}).then(function(result){
                 if(result === 'ok'){
-                    //updateServerSocket(data).then(function() {
-                        webRTCSocketService.remotePeerUsername = data.initiator;
-                        webRTCSocketService.uuid = data.uuid;
-                        webRTCSocketService.remotePeerSId = data.sid;
-                        socket.emit('call-accepted', data.sid);
+                    updateServerSocket(data).then(function() {
                         $location.path('/webrtc');
-                    //});
+                    });
                 } else {
                 }
             });
@@ -46,34 +50,32 @@ define(['app'], function(app) {
             
             var defer =  $q.defer();
             
-            /*webRTCSocketService.initiatorUsername = data.initiator;
+            webRTCSocketService.remotePeerUsername = data.initiator;
             webRTCSocketService.uuid = data.uuid;
-            socket.emit('call-accepted');*/
+            webRTCSocketService.remotePeerSId = data.sid;
+            socket.emit('call-accepted', data.sid);
             
             defer.resolve();
             
             return defer.promise;
         }
         
-        // User logIn in the system.
-        socket.emit('user-authenticated', vm.username);
         
-        // There are changes in the square because somebody enter or quit.
-        // @square: Updated info of the square.
-        socket.on('square-updated', function(square){
-            vm.list = square;
-        });
         
         
         
         
         
         function init(){
-            console.log(webRTCSocketService);
-            //$rootScope.$broadcast('setAppLocation', 'Softturret dashboard');
+            // User logIn in the system.
+            socket.emit('user-authenticated', vm.username);
         }
         
         init();
+        
+        $scope.$on('$destroy', function(){
+            socket.removeListener();
+        });
     };
 
     DashboardController.$inject = injectParams;

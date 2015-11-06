@@ -9,7 +9,8 @@ define(['app'], function(app){
         var serviceBase = '/api/dataservice/',
         factory = {
             user: {
-                isAuthenticated: false
+                isAuthenticated: false,
+                name: null
             }
         };
 

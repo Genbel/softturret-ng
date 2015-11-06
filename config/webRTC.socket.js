@@ -22,9 +22,12 @@ module.exports = function(io){
         
         // User authenticate in the system so we have to notify to the socket to uptade variables
         // @username: client username
-        client.on('user-authenticated', function(username) {    
-            
+        client.on('user-authenticated', function(username) {
             square[client.id] = {"name" : username, "room" : null };
+            io.sockets.emit('square-updated', square);
+        });
+        
+        client.on('square-updated', function() {
             io.sockets.emit('square-updated', square);
         });
         
@@ -81,9 +84,21 @@ module.exports = function(io){
         // Peer to peer comunication system
         // @node: It is a json object that it has got roomuuid and message values.
         client.on('message', function(node) {
-            console.log(node);
             client.broadcast.to(node.room).emit('message', node.message);
         });
+        
+        // End the call between connected peers
+        // @data: roomUUID and remoteSId
+        client.on('hang-up', function(data) {
+            client.broadcast.to(data.uuid).emit('hang-up');
+            square[client.id].room = null;
+            square[data.remoteSId].room = null;
+            delete rooms[data.uuid];
+            console.log(rooms);
+            console.log(square);
+            
+        });
+            
             
     });
     

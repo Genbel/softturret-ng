@@ -9,8 +9,8 @@
 </head>
 
 <body data-ng-cloak>
-    <header class="navbar" data-ng-controller="NavbarController as vm">
-        <nav class="container">
+    <header class="navbar" data-ng-controller="NavbarController as vm" ng-show="vm.show">
+        <nav class="container-fluid">
             <div class="navbar-header">
                 <a class="navbar-brand" href="#/dashboard">
                     <span class="appTitle">{{ vm.appTitle }}</span>
@@ -22,7 +22,7 @@
                 <ul class="nav navbar-nav nav-pills navBarPadding"
                     data-menu-highlighter data-highlight-class-name="active">
                     <li><a href="#/dashboard">Dashboard</a></li>
-                    <li><a href="#/webrtc">webRTC connection</a></li>
+                    <!--<li><a href="#/webrtc">webrtc</a></li>-->
                     <li data-ng-click="vm.loginOrOut()">
                         <!-- href not used but needed to compare against path in menu-highlighter -->
                         <a data-href="#/login">{{ vm.loginLogoutText }}</a>

@@ -50,6 +50,15 @@
   margin: 10px;
   color: white; }
 
+#form-message {
+  bottom: 0;
+  position: absolute;
+  background-color: #BFCCB9;
+  padding: 10px; }
+  #form-message input {
+    width: 90%;
+    height: 2%; }
+
 body {
   padding-top: 40px;
   padding-bottom: 40px;

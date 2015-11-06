@@ -1,0 +1,10 @@
+#form-message{
+    bottom:0;
+    position: absolute;
+    background-color: #BFCCB9;
+    padding: 10px;
+    & input {
+        width: 90%;
+        height: 2%;
+    }
+}
