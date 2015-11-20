@@ -1,6 +1,26 @@
-$main-color: #cb3837;
+/*--------- Private widget colors -----------*/
+// Button background
+$dial-button: #888484;
+$dial-button-shadow-color: #434242;
+// Lamp States
+// Green(Speak)
+$speak-color: #00D965;
+$speak-shadow-one: #7AC47B;
+$speak-shadow-two: #0CFF6D;
+$speak-shadow-three: #30FF00;
+$speak-list: $speak-color, $speak-shadow-one, $speak-shadow-two, $speak-shadow-three;
+// Red(Listen, someone speaks)
+$listen-color: #DB2F43;
+$listen-shadow-one: #F00;
+$listen-shadow-two: #EC9494;
+$listen-shadow-three: #B33133;
+$listen-list: $listen-color, $listen-shadow-one, $listen-shadow-two, $listen-shadow-three;
+
+$add-widget-color: #16C069;
+$background-color: #ECECEC;
+
+/*$main-color: #cb3837;
 $dial-color: #00bf59;
 $busy-color: #ffa450;
-$join-color: #c41e3a;
 $hangup-color: #c41e3a;
-$background-color: #eee;
+$single-channel-widget-color: #4369F6;*/

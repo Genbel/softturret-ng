@@ -11,6 +11,7 @@ require(
         'services/modalService',
         'services/authService',
         'services/webRTCSocketService',
+        'services/RESTfulService',
         'lib/webrtc-adapter/adapter',
         'directives/wcAngularOverlay'
     ],

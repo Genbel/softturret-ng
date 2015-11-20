@@ -1,6 +1,6 @@
 'use strict';
-
 var usersCtrl = require('./controllers/users.server.controller'),
+    widgetsCtrl = require('./controllers/widgets.server.controller'),
     path = require('path'),
     _ = require('underscore');
 
@@ -23,6 +23,10 @@ var routes = [
         path: '/api/dataservice/signup',
         httpMethod: 'POST',
         middleware: [usersCtrl.signup]
+    },{
+        path:'/api/dataservice/widget/create',
+        httpMethod:'POST',
+        middleware: [widgetsCtrl.addWidget]
     }
 ];
 // Encapsulates app routes management code into a single unit of code

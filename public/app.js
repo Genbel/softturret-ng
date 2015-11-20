@@ -32,8 +32,7 @@ define(['services/routeResolver'], function(){
                 //The second parameter allows for putting related controllers/views into subfolders to better organize large projects
                 //Thanks to Ton Yeung for the idea and contribution
                 .when('/login', route.resolve('Login', '', 'vm'))
-                .when('/dashboard', route.resolve('Dashboard', 'dashboard/', 'vm', true))
-                .when('/webrtc', route.resolve('Webrtc', 'webrtc/', 'vm', true))
+                .when('/dashboard', route.resolve('Dashboard', 'dashboard/', 'vm'))
                 .when('/signup', route.resolve('Signup','','vm'))
                 .otherwise({ redirectTo: '/dashboard' });
     }]);
@@ -46,7 +45,6 @@ define(['services/routeResolver'], function(){
                 //own security as well since client-based security is easily hacked
                 $rootScope.$on("$routeChangeStart", function (event, next, current) {
                     if (next && next.$$route && next.$$route.secure) {
-                        console.log('secure = true');
                         if(!authService.user.isAuthenticated){
                             $rootScope.$evalAsync(function() {
                                 authService.redirectToLogin();

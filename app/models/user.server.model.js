@@ -4,6 +4,7 @@
 // Charge moongose module
 var mongoose = require('mongoose'),
     crypto = require('crypto');
+
 // Charge Scheme Object
 var Schema = mongoose.Schema;
 
@@ -42,7 +43,9 @@ var UserSchema = new Schema({
         type: Date,
         // Create a default value
         default: Date.now
-    }
+    },
+
+    widgets: [ 'Widget' ]
 });
 
 // Use middleware to pre-save, to create the hash password

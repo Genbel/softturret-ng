@@ -1,3 +1,9 @@
+/*--------- Private widget colors -----------*/
+/*$main-color: #cb3837;
+$dial-color: #00bf59;
+$busy-color: #ffa450;
+$hangup-color: #c41e3a;
+$single-channel-widget-color: #4369F6;*/
 .form-signin {
   max-width: 330px;
   padding: 15px;
@@ -32,22 +38,73 @@
   border-top-left-radius: 0;
   border-top-right-radius: 0; }
 
-.btn-dial {
-  background-color: #00bf59;
-  width: 50px;
+.btn-add-widget {
+  background-color: #16C069;
+  width: 150px;
   margin: 10px;
-  color: white; }
+  color: black;
+  font-weight: bold; }
 
-.btn-busy {
-  background-color: #ffa450;
-  width: 50px;
+.btn-channel-widget {
+  background-color: #888484;
+  width: 150px;
   margin: 10px;
-  color: white; }
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 10px;
+  height: 80px;
+  display: table;
+  border: solid 1px #888484;
+  transition: all 0.2s;
+  border-bottom: 5px solid #434242;
+  position: relative;
+  transition: all 0.1s;
+  -webkit-transition: all 0.1s;
+  position: relative; }
+  .btn-channel-widget:active {
+    transform: translate(0px, 5px);
+    -webkit-transform: translate(0px, 5px);
+    border-bottom: 1px solid; }
 
-.btn-hangup {
-  background-color: #c41e3a;
-  width: 50px;
-  margin: 10px;
+.light {
+  display: inline-block;
+  background: transparent;
+  width: 5px;
+  height: 5px;
+  padding: 5px;
+  margin-top: 10px;
+  margin-left: 10px;
+  border-radius: 15px;
+  float: left;
+  display: table-cell;
+  -webkit-transition: box-shadow .4s ease;
+  -moz-transition: box-shadow .4s ease;
+  -ms-transition: box-shadow .4s ease;
+  -o-transition: box-shadow .4s ease;
+  transition: box-shadow .4s ease;
+  -webkit-transition: background-color .1s ease;
+  -moz-transition: background-color .1s ease;
+  -ms-transition: background-color .1s ease;
+  -o-transition: background-color .1s ease;
+  transition: background-color .1s ease; }
+  .btn-channel-widget:active .light {
+    -webkit-box-shadow: 0 0 10px #7AC47B, 0 0 20px #0CFF6D, 0 0 30px #30FF00, 0 0 40px #30FF00, 0 0 70px #30FF00, 0 0 80px #30FF00, 0 0 100px #30FF00, 0 0 150px #30FF00;
+    -moz-box-shadow: 0 0 10px #7AC47B, 0 0 20px #0CFF6D, 0 0 30px #30FF00, 0 0 40px #30FF00, 0 0 70px #30FF00, 0 0 80px #30FF00, 0 0 100px #30FF00, 0 0 150px #30FF00;
+    box-shadow: 0 0 10px #7AC47B, 0 0 20px #0CFF6D, 0 0 30px #30FF00, 0 0 40px #30FF00, 0 0 70px #30FF00, 0 0 80px #30FF00, 0 0 100px #30FF00, 0 0 150px #30FF00;
+    border-radius: 15px;
+    background: #00D965; }
+  .light.blink-red {
+    -webkit-box-shadow: 0 0 10px #F00, 0 0 20px #EC9494, 0 0 30px #B33133, 0 0 40px #B33133, 0 0 70px #B33133, 0 0 80px #B33133, 0 0 100px #B33133, 0 0 150px #B33133;
+    -moz-box-shadow: 0 0 10px #F00, 0 0 20px #EC9494, 0 0 30px #B33133, 0 0 40px #B33133, 0 0 70px #B33133, 0 0 80px #B33133, 0 0 100px #B33133, 0 0 150px #B33133;
+    box-shadow: 0 0 10px #F00, 0 0 20px #EC9494, 0 0 30px #B33133, 0 0 40px #B33133, 0 0 70px #B33133, 0 0 80px #B33133, 0 0 100px #B33133, 0 0 150px #B33133;
+    border-radius: 15px;
+    background: #DB2F43; }
+
+.channel-info {
+  display: table-cell;
+  text-align: left;
+  vertical-align: middle;
   color: white; }
 
 #form-message {
@@ -62,7 +119,7 @@
 body {
   padding-top: 40px;
   padding-bottom: 40px;
-  background-color: #eee; }
+  background-color: #ECECEC; }
 
 /* ng-cloak */
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng.ng-cloak {

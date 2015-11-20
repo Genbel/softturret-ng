@@ -20,7 +20,6 @@
     "method-override": "^2.3.5",
     "mongoose": "^4.1.12",
     "morgan": "^1.6.1",
-    "node-uuid": "^1.4.3",
     "passport": "^0.3.0",
     "passport-local": "^1.0.0",
     "q": "^1.4.1",

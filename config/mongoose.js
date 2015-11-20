@@ -14,8 +14,9 @@ module.exports = function() {
     
         var db = mongoose.connect(connection);
 
-        // Charge our 'User' model
-        require('../app/models/users.server.model');
+        // Charge our models: User and widget
+        require('../app/models/user.server.model.js');
+        require('../app/models/widget.server.model.js');
 
         // CONNECTION EVENTS
         // When successfully connected
@@ -44,7 +45,7 @@ module.exports = function() {
         return db;
     };
     
-    var db = setupConfiguration();
+    setupConfiguration();
     
     // Return the mongoose database instance
     return deferred.promise;

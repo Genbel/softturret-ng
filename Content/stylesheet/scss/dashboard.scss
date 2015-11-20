@@ -1,8 +1,26 @@
-.btn-dial {
-    @include panel-control-buttons($dial-color, 50px, 10px, white);}
+.btn-add-widget {
+    @include panel-control-buttons($add-widget-color, 150px, 10px, black);}
 
-.btn-busy {
-    @include panel-control-buttons($busy-color, 50px, 10px, white);}
+.btn-channel-widget {
+  @include dial-buttons($dial-button, 150px, 10px, black);
+  @include threeD-effect();
+}
 
-.btn-hangup {
-    @include panel-control-buttons($hangup-color, 50px, 10px, white);}
+.light {
+  @include state-lamp();
+
+  .btn-channel-widget:active & {
+    @include light-lamp($speak-list);
+  }
+  &.blink-red {
+    @include light-lamp($listen-list);
+  }
+}
+
+.channel-info{
+  display: table-cell;
+  text-align: left;
+  vertical-align: middle;
+  color: white;
+}
+

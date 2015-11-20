@@ -1,5 +1,68 @@
+@mixin main-button-mixin($background-color, $width, $margin, $color){
+  background-color: $background-color;
+  width: $width;
+  margin: $margin;
+  color: $color;
+  font-weight: bold;
+}
+
 @mixin panel-control-buttons($background-color, $width, $margin, $color) {
-    background-color: $background-color;
-    width: $width;
-    margin: $margin;
-    color: $color; }
+  @include main-button-mixin($background-color, $width, $margin, $color);}
+
+@mixin dial-buttons($background-color, $width, $margin, $color) {
+  @include main-button-mixin($background-color, $width, $margin, $color);
+  cursor:pointer;
+  border-radius: 10px;
+  height: 80px;
+  display: table;}
+
+@mixin threeD-effect(){
+  border: solid 1px $dial-button;
+  transition: all 0.2s;
+  border-bottom: 5px solid $dial-button-shadow-color;
+  position: relative;
+  transition: all 0.1s;
+  -webkit-transition: all 0.1s;
+  position:relative;
+  &:active{
+    transform: translate(0px,5px);
+    -webkit-transform: translate(0px,5px);
+    border-bottom: 1px solid;
+  }
+}
+
+@mixin state-lamp(){
+  display: inline-block;
+  background: transparent;
+  width: 5px;
+  height: 5px;
+  padding: 5px;
+  margin-top: 10px;
+  margin-left: 10px;
+  border-radius: 15px;
+  float:left;
+  display: table-cell;
+  // Set up the transitions of the lamp
+  -webkit-transition: box-shadow .4s ease;
+  -moz-transition: box-shadow .4s ease;
+  -ms-transition: box-shadow .4s ease;
+  -o-transition: box-shadow .4s ease;
+  transition: box-shadow .4s ease;
+  -webkit-transition: background-color .1s ease;
+  -moz-transition: background-color .1s ease;
+  -ms-transition: background-color .1s ease;
+  -o-transition: background-color .1s ease;
+  transition: background-color .1s ease;
+}
+
+@mixin light-lamp($list){
+  $color: nth($list, 1);
+  $tier1: nth($list, 2);
+  $tier2: nth($list, 3);
+  $tier3: nth($list, 4);
+  -webkit-box-shadow: 0 0 10px $tier1, 0 0 20px $tier2, 0 0 30px $tier3, 0 0 40px $tier3, 0 0 70px $tier3, 0 0 80px $tier3, 0 0 100px $tier3, 0 0 150px $tier3;
+  -moz-box-shadow: 0 0 10px $tier1, 0 0 20px $tier2, 0 0 30px $tier3, 0 0 40px $tier3, 0 0 70px $tier3, 0 0 80px $tier3, 0 0 100px $tier3, 0 0 150px $tier3;
+  box-shadow: 0 0 10px $tier1, 0 0 20px $tier2, 0 0 30px $tier3, 0 0 40px $tier3, 0 0 70px $tier3, 0 0 80px $tier3, 0 0 100px $tier3, 0 0 150px $tier3;
+  border-radius: 15px;
+  background: $color;
+}
