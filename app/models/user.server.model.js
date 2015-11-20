@@ -45,7 +45,7 @@ var UserSchema = new Schema({
         default: Date.now
     },
 
-    widgets: [ 'Widget' ]
+    widgets: [ { type: Schema.Types.ObjectId, ref: 'Widget'} ]
 });
 
 // Use middleware to pre-save, to create the hash password

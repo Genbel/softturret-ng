@@ -15,8 +15,9 @@ module.exports = function() {
         var db = mongoose.connect(connection);
 
         // Charge our models: User and widget
-        require('../app/models/user.server.model.js');
         require('../app/models/widget.server.model.js');
+        require('../app/models/user.server.model.js');
+
 
         // CONNECTION EVENTS
         // When successfully connected
