@@ -19,7 +19,7 @@ module.exports = function() {
             _id: id,
         // add mongoose options in findOne function.
         // In that case is to not get that variables
-        }, '-password -salt', function(err, user) {
+        }, '-password -salt -widgets', function(err, user) {
             done(err, user);
         });
     });

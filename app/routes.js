@@ -14,7 +14,7 @@ var routes = [
     },{
         path: '/api/dataservice/login',
         httpMethod: 'POST',
-        middleware: [usersCtrl.login]
+        middleware: [usersCtrl.login, widgetsCtrl.getUserConfiguration]
     },{
         path: '/api/dataservice/logout',
         httpMethod: 'POST',
@@ -27,6 +27,10 @@ var routes = [
         path:'/api/dataservice/widget/create',
         httpMethod:'POST',
         middleware: [widgetsCtrl.addWidget]
+    },{
+        path: '/api/dataservice/widget/add/user',
+        httpMethod: 'POST',
+        middleware: [widgetsCtrl.attachUserToChannel]
     }
 ];
 // Encapsulates app routes management code into a single unit of code

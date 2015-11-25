@@ -11,7 +11,7 @@
     },
     "server": {
         "enableHTTPS": true,
-        "schema": "http",
+        "schema": "https",
         "domain": "192.168.0.2",
         "httpPort": 8080,
         "httpsPort": 443

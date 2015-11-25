@@ -9,18 +9,22 @@
 @mixin panel-control-buttons($background-color, $width, $margin, $color) {
   @include main-button-mixin($background-color, $width, $margin, $color);}
 
-@mixin dial-buttons($background-color, $width, $margin, $color) {
+@mixin dial-buttons($background-color, $width, $height, $margin, $color) {
   @include main-button-mixin($background-color, $width, $margin, $color);
   cursor:pointer;
   border-radius: 10px;
-  height: 80px;
+  height: $height;
   display: table;}
+
+@mixin add-user($background-color, $width, $height, $margin, $color) {
+  @include main-button-mixin($background-color, $width, $margin, $color);
+  cursor:pointer;
+  height: $height;}
 
 @mixin threeD-effect(){
   border: solid 1px $dial-button;
   transition: all 0.2s;
   border-bottom: 5px solid $dial-button-shadow-color;
-  position: relative;
   transition: all 0.1s;
   -webkit-transition: all 0.1s;
   position:relative;

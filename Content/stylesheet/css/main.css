@@ -38,6 +38,9 @@ $single-channel-widget-color: #4369F6;*/
   border-top-left-radius: 0;
   border-top-right-radius: 0; }
 
+.channel {
+  display: flex; }
+
 .btn-add-widget {
   background-color: #16C069;
   width: 150px;
@@ -45,7 +48,7 @@ $single-channel-widget-color: #4369F6;*/
   color: black;
   font-weight: bold; }
 
-.btn-channel-widget {
+.widget-btn {
   background-color: #888484;
   width: 150px;
   margin: 10px;
@@ -53,19 +56,28 @@ $single-channel-widget-color: #4369F6;*/
   font-weight: bold;
   cursor: pointer;
   border-radius: 10px;
-  height: 80px;
+  height: 60px;
   display: table;
   border: solid 1px #888484;
   transition: all 0.2s;
   border-bottom: 5px solid #434242;
-  position: relative;
   transition: all 0.1s;
   -webkit-transition: all 0.1s;
   position: relative; }
-  .btn-channel-widget:active {
+  .widget-btn:active {
     transform: translate(0px, 5px);
     -webkit-transform: translate(0px, 5px);
     border-bottom: 1px solid; }
+
+.btn-add-user {
+  background-color: #4A7699;
+  width: 25px;
+  margin: 10px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  height: 25px;
+  display: flex; }
 
 .light {
   display: inline-block;
@@ -88,7 +100,7 @@ $single-channel-widget-color: #4369F6;*/
   -ms-transition: background-color .1s ease;
   -o-transition: background-color .1s ease;
   transition: background-color .1s ease; }
-  .btn-channel-widget:active .light {
+  .widget-btn:active .light {
     -webkit-box-shadow: 0 0 10px #7AC47B, 0 0 20px #0CFF6D, 0 0 30px #30FF00, 0 0 40px #30FF00, 0 0 70px #30FF00, 0 0 80px #30FF00, 0 0 100px #30FF00, 0 0 150px #30FF00;
     -moz-box-shadow: 0 0 10px #7AC47B, 0 0 20px #0CFF6D, 0 0 30px #30FF00, 0 0 40px #30FF00, 0 0 70px #30FF00, 0 0 80px #30FF00, 0 0 100px #30FF00, 0 0 150px #30FF00;
     box-shadow: 0 0 10px #7AC47B, 0 0 20px #0CFF6D, 0 0 30px #30FF00, 0 0 40px #30FF00, 0 0 70px #30FF00, 0 0 80px #30FF00, 0 0 100px #30FF00, 0 0 150px #30FF00;
@@ -106,6 +118,13 @@ $single-channel-widget-color: #4369F6;*/
   text-align: left;
   vertical-align: middle;
   color: white; }
+
+.margin-left {
+  margin-left: auto; }
+
+.no-user {
+  width: 100%;
+  padding: 5px; }
 
 #form-message {
   bottom: 0;

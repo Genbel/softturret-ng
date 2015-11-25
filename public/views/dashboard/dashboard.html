@@ -17,63 +17,38 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-6">
-                <div class="col-md-12">
-                    <div class="col-md-6">
-                        <div class="btn-channel-widget">
-                            <span class="light"></span>
-                            <span class="channel-info">Channel 1</span>
+        <div class="row" style="margin-top: 50px;">
+            <div class="col-md-6" data-ng-repeat="widget in vm.smallWidgets">
+                <div class="col-md-6" data-ng-repeat="button in widget.buttons">
+                    <div data-ng-if="button.position %2 == 1">
+                        <div class="channel">
+                            <div class="widget-btn">
+                                <span class="light"></span>
+                                <span data-ng-if="button.username != null" class="channel-info">{{button.username}}</span>
+                                <span data-ng-if="button.username == null" class="channel-info">CH {{button.position}}</span>
+                            </div>
+                            <div class="channel-details margin-left">
+                                <div class="btn-add-user" ng-click="vm.addUser(button._id, widget._id)">
+                                    <span class="no-user"><i class="fa fa-plus"></i></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="btn-channel-widget pull-right">
-                            <span class="light"></span>
-                            <span class="channel-info">Channel 1</span>
+                    <div data-ng-if="button.position %2 == 0">
+                        <div class="channel">
+                            <div class="channel-details">
+                                <div class="btn-add-user" ng-click="vm.addUser(button._id, widget._id)">
+                                    <span class="no-user"><i class="fa fa-plus"></i></span>
+                                </div>
+                            </div>
+                            <div class="widget-btn margin-left">
+                                <span class="light"></span>
+                                <span data-ng-if="button.username != null" class="channel-info">{{button.username}}</span>
+                                <span data-ng-if="button.username == null" class="channel-info">CH {{button.position}}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="col-md-6">
-                        <div class="btn-channel-widget">
-                            <span class="light"></span>
-                            <span class="channel-info">Channel 1</span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="btn-channel-widget pull-right">
-                            <span class="light"></span>
-                            <span class="channel-info">Channel 1</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="col-md-6">
-                        <div class="btn-channel-widget">
-                            <span class="light"></span>
-                            <span class="channel-info">Channel 1</span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="btn-channel-widget pull-right">
-                            <span class="light blink-red"></span>
-                            <span class="channel-info">Channel 1</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-12">
-                    <div class="col-md-6">
-                        <div class="btn-channel-widget">
-                            <span class="light blink-red"></span>
-                            <span class="channel-info">Channel 1</span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="btn-channel-widget pull-right">
-                            <span class="light"></span>
-                            <span class="channel-info">Channel 1</span>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>

@@ -1,0 +1,22 @@
+<div class="modal-dialog">
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12" data-ng-repeat="user in userList track by user._id">
+                <div class="col-md-10">
+                    <h5>{{user.username}}</h5>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn" data-ng-click="getUserId()">Add</button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <button class="btn btn-dial" align="center" data-ng-click="modalOptions.accept();"><i class="fa fa-phone" ></i> Accept</button>
+            </div>
+            <div class="col-md-6">
+                <button class="btn btn-hangup" align="center" data-ng-click="modalOptions.reject();"><i class="fa fa-phone fa-rotate-90"></i> Reject</button>
+            </div>
+        </div>
+    </div>
+</div>

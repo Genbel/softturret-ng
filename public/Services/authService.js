@@ -2,9 +2,9 @@
 
 define(['app'], function(app){
 
-    var injectParams = ['$http', '$rootScope', '$q'];
+    var injectParams = ['$http', '$rootScope', '$q','widgetsRestfulFactory'];
 
-    var authFactory = function ($http, $rootScope, $q) {
+    var authFactory = function ($http, $rootScope, $q, widgetsRestfulFactory) {
 
         var serviceBase = '/api/dataservice/',
         factory = {
@@ -37,6 +37,9 @@ define(['app'], function(app){
                     // The user is authenticate so redirect to dashboard
                     // and set the userlogged
                     } else {
+                        console.log(res);
+                        widgetsRestfulFactory.config = res.data.widgets;
+                        widgetsRestfulFactory.softUsers = res.data.users;
                         data = { "authenticated" : loggedIn };
                     }
                     def.resolve(data);

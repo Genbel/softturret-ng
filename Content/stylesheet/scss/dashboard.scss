@@ -1,15 +1,23 @@
+.channel {
+  display: flex;
+}
 .btn-add-widget {
     @include panel-control-buttons($add-widget-color, 150px, 10px, black);}
 
-.btn-channel-widget {
-  @include dial-buttons($dial-button, 150px, 10px, black);
+.widget-btn {
+  @include dial-buttons($dial-button, 150px, 60px, 10px, black);
   @include threeD-effect();
+}
+
+.btn-add-user{
+  @include add-user($add-user-color, 25px, 25px, 10px, white);
+  display:flex;
 }
 
 .light {
   @include state-lamp();
 
-  .btn-channel-widget:active & {
+  .widget-btn:active & {
     @include light-lamp($speak-list);
   }
   &.blink-red {
@@ -22,5 +30,14 @@
   text-align: left;
   vertical-align: middle;
   color: white;
+}
+
+.margin-left{
+  margin-left:auto;
+}
+
+.no-user {
+  width: 100%;
+  padding: 5px;
 }
 

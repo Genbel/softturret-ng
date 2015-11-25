@@ -5,10 +5,10 @@ var User = require('mongoose').model('User'),
     passport = require('passport');
 
 // Renders the signin page
-exports.renderIndex = function(req, res, next) {
-    
+exports.renderIndex = function(req, res) {
+
     res.render('index');
-};
+}
 
 exports.signup = function(req, res, next) {
     // Create new instance of the user
@@ -19,7 +19,7 @@ exports.signup = function(req, res, next) {
 
     // Save the new user
     user.save(function(err) {
-        // There is an error, flash the erro
+        // There is an error, flash the error
         if (err) { 
             return res.status(200).json({"type": "db", "message" : getErrorMessage(err)});
         }
@@ -53,7 +53,9 @@ exports.login = function(req, res, next){
                 return next(err);
             }
             // Send back the message
-            res.status(200).json({"username": user.username, "authenticated": true});
+            console.log("logIn");
+            next();
+            //res.status(200).json({"user": user.username, "authenticated": true});
         });
     })(req, res, next);
     

@@ -13,7 +13,9 @@ var ButtonSchema = new Schema({
 
     private: Boolean,
 
-    Username: String
+    username: String,
+
+    userId: Schema.Types.ObjectId
 });
 
 // Define new 'WidgetSchema'
@@ -28,4 +30,5 @@ var WidgetSchema = new Schema({
 // The name that we set here, it will be the name of the collection on the database.
 // Set the model name singular because after the collection name will be 'name'+s so it would be names
 // The children of each collection will have a documents.
+mongoose.model('Button', ButtonSchema);
 mongoose.model('Widget', WidgetSchema);
