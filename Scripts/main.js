@@ -13,7 +13,8 @@ require(
         'services/webRTCSocketService',
         'services/widgetsRestfulService',
         'lib/webrtc-adapter/adapter',
-        'directives/wcAngularOverlay'
+        'directives/wcAngularOverlay',
+        'views/dashboard/directives/small/small.core'
     ],
     function () {
         angular.bootstrap(document, ['softturret']);

@@ -40,7 +40,6 @@ define(['app'], function(app) {
         function init() {
             if(widgetsRestfulFactory.config !== null){
                 vm.smallWidgets = widgetsRestfulFactory.config.small;
-                console.log(vm.smallWidgets);
             }
         };
 

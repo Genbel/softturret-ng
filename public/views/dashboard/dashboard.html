@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <div class="col-md-offset-1 col-md-1">
+                <div class="col-md-2">
                     <h5>Add widget:</h5>
                 </div>
                 <div class="col-md-2">
@@ -19,7 +19,15 @@
 
         <div class="row" style="margin-top: 50px;">
             <div class="col-md-6" data-ng-repeat="widget in vm.smallWidgets">
-                <div class="col-md-6" data-ng-repeat="button in widget.buttons">
+                <smallwidget datasource="widget"></smallwidget>
+             </div>
+        </div>
+    </div>
+</div>
+
+<!--
+
+<div class="col-md-6" data-ng-repeat="button in widget.buttons">
                     <div data-ng-if="button.position %2 == 1">
                         <div class="channel">
                             <div class="widget-btn">
@@ -50,7 +58,5 @@
                     </div>
 
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+-->
