@@ -1,7 +1,7 @@
 'use strict';
 
 var config = require('./config'),
-    webRTCSocket = require('./webRTC.socket'),
+    softturretSocket = require('./softturret.socket.js'),
     session = require('express-session'),
     express = require('express'),
     morgan = require('morgan'),
@@ -47,7 +47,7 @@ module.exports = function(config) {
     // Set up the socket
     io = io.listen(server);
     
-    socket = webRTCSocket(io);
+    socket = softturretSocket(io);
     
     app.use(bodyParser.urlencoded({
         extended: true

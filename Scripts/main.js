@@ -10,7 +10,7 @@ require(
         'controllers/navbarController',
         'services/modalService',
         'services/authService',
-        'services/webRTCSocketService',
+        'services/softturretSocketService',
         'services/widgetsRestfulService',
         'lib/webrtc-adapter/adapter',
         'directives/wcAngularOverlay',

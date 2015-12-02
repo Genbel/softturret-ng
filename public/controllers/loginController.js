@@ -2,19 +2,11 @@
 
 define(['app'], function(app) {
     
-    var injectParams = ['$location', 'authService', 'webRTCSocketService'];
+    var injectParams = ['$location', 'authService'];
 
-    var LoginController = function($location, authService, webRTCSocketService) {
+    var LoginController = function($location, authService) {
         
         var vm = this;
-        
-        /*var socket = webRTCSocketService.socket;
-        // User connect to the server when request the login
-        if(webRTCSocketService.connected === false) {
-            console.log('socket connected');
-            webRTCSocketService.connected = true;
-            socket.connect();
-        }*/
         
         vm.username = null;
         vm.password = null;

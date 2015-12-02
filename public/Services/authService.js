@@ -37,8 +37,11 @@ define(['app'], function(app){
                     // The user is authenticate so redirect to dashboard
                     // and set the userlogged
                     } else {
+                        widgetsRestfulFactory.setUpWidgetsData(res.data);
+                        /*widgetsRestfulFactory.createWidgetHashMap(res.data.widgets);
                         widgetsRestfulFactory.config = res.data.widgets;
-                        widgetsRestfulFactory.softUsers = res.data.users;
+                        widgetsRestfulFactory.softUsers = res.data.softUsers;
+                        widgetsRestfulFactory.user = res.data.user;*/
                         data = { "authenticated" : loggedIn };
                     }
                     def.resolve(data);

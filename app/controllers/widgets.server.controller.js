@@ -4,7 +4,8 @@ var Widget  = require('mongoose').model('Widget'),
     User    = require('mongoose').model('User'),
     Button  = require('mongoose').model('Button'),
     q       = require('q'),
-    _       = require('underscore');
+    _       = require('underscore'),
+    HashMap = require('hashmap');
 
 exports.addWidget = function(req, res){
 
@@ -43,11 +44,21 @@ exports.addWidget = function(req, res){
 // Get user configuration of the softurret
 exports.getUserConfiguration = function(req, res){
 
+    // The user already is logged so we can get the id of the user using passport
     var userId = req.user._id;
     User.findOne({ _id: userId }, '-password -salt -_id -created -v').populate('widgets').exec(function(error, userWidgets){
         var widgetsGroups = groupByTypeWidgets(userWidgets);
-        User.find({}, '_id username', function(error, users){
-            res.status(200).json({"authenticated": true, "widgets": widgetsGroups, "users": users/*userWidgets.toJSON()*/});
+        //var widgetsHashMap = createConfigurationHashMap(widgetsGroups);
+        User.find({}, '_id username', function(error, usersToken){
+            // @widgets: User widget configuration
+            // @softusers: All the user that are registered in the system
+            // @user: Actual user info
+            res.status(200).json({
+                "authenticated": true,
+                "widgets": widgetsGroups,
+                "softUsers": usersToken,
+                "user": { "username": req.user.username, "_id": userId }
+            });
         });
     });
 };
@@ -62,7 +73,7 @@ exports.attachUserToChannel = function(req, res){
         {'buttons.$.username' : req.body.username, 'buttons.$.userId': req.body.userId},
         // Callback
         function(err,result){
-            if(!err){
+            if(err){
                 console.log(err);
             }
             res.sendStatus(200);

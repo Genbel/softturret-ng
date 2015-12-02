@@ -1,0 +1,39 @@
+{
+  "name": "hashmap",
+  "version": "2.0.4",
+  "description": "HashMap Class for JavaScript",
+  "homepage": "https://github.com/flesler/hashmap",
+  "main": "./hashmap.js",
+  "dependencies": {},
+  "keywords": [
+    "hashmap",
+    "map",
+    "object",
+    "array",
+    "associative",
+    "javascript",
+    "nodejs",
+    "node",
+    "browser"
+  ],
+  "author": {
+    "name": "Ariel Flesler",
+    "web": "http://flesler.blogspot.com/"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "test",
+    "components"
+  ],
+  "_release": "2.0.4",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.0.4",
+    "commit": "34c88b5f70439268d5fe84324191de93efef046e"
+  },
+  "_source": "git://github.com/flesler/hashmap.git",
+  "_target": "~2.0.4",
+  "_originalSource": "hashmap",
+  "_direct": true
+}

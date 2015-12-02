@@ -32,7 +32,7 @@ define(['services/routeResolver'], function(){
                 //The second parameter allows for putting related controllers/views into subfolders to better organize large projects
                 //Thanks to Ton Yeung for the idea and contribution
                 .when('/login', route.resolve('Login', '', 'vm'))
-                .when('/dashboard', route.resolve('Dashboard', 'dashboard/', 'vm'))
+                .when('/dashboard', route.resolve('Dashboard', 'dashboard/', 'vm', true))
                 .when('/signup', route.resolve('Signup','','vm'))
                 .otherwise({ redirectTo: '/dashboard' });
     }]);

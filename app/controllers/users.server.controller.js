@@ -55,7 +55,6 @@ exports.login = function(req, res, next){
             // Send back the message
             console.log("logIn");
             next();
-            //res.status(200).json({"user": user.username, "authenticated": true});
         });
     })(req, res, next);
     

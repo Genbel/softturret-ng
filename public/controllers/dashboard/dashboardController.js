@@ -2,17 +2,27 @@
 
 define(['app'], function(app) {
     
-    var injectParams = ['$scope', '$rootScope','$location', 'authService', 'webRTCSocketService', 'widgetsRestfulFactory', 'modalService'];
+    var injectParams = ['$scope', '$rootScope','$location', 'authService', 'softturretSocketService', 'widgetsRestfulFactory', 'modalService'];
 
-    var DashboardController = function($scope, $rootScope, $location, authService, webRTCSocketService, widgetsRestfulFactory, modalService) {
-        
+    var DashboardController = function($scope, $rootScope, $location, authService, softturretSocketService, widgetsRestfulFactory, modalService) {
+
         var vm = this;
-            vm.smallWidgets = null;
+        vm.smallWidgets = null;
 
+        var socket = softturretSocketService.socket;
+
+        function init() {
+            socket.emit('user-connected', widgetsRestfulFactory.user);
+            if(widgetsRestfulFactory.config !== null){
+                vm.smallWidgets = widgetsRestfulFactory.config.small;
+            }
+        };
+
+        init();
         
-        var socket = webRTCSocketService.socket;
-        
-        webRTCSocketService.username = authService.user.name;
+        //webRTCSocketService.username = authService.user.name;
+
+        //  --------- Set up controller functions---------------------
 
         vm.createSmallWidget = function(){
             widgetsRestfulFactory.createWidget( { type: 'small'} )
@@ -22,12 +32,13 @@ define(['app'], function(app) {
         };
 
         vm.addUser = function(buttonId, widgetId){
-
             modalService.show({},{}, buttonId, widgetId).then(function(result) {
                 if (result === 'ok') {
                 }
             });
         };
+
+        // --------- Set up methods related with the scope of the controller -----------
 
         $scope.$on('$destroy', function(){
             socket.removeListener();
@@ -37,13 +48,12 @@ define(['app'], function(app) {
             vm.smallWidgets = args;
         });
 
-        function init() {
-            if(widgetsRestfulFactory.config !== null){
-                vm.smallWidgets = widgetsRestfulFactory.config.small;
-            }
-        };
+        //  --------- Set up socket functionality ---------------------
 
-        init();
+        socket.on('square-updated', function(square){
+            console.log('square-updated');
+            console.log(square);
+        });
     };
 
     DashboardController.$inject = injectParams;
