@@ -8,7 +8,14 @@ module.exports = function(io){
 
         client.on('user-connected', function(user){
             var square = socketController.addNewUserInTheSquare(client.id, user);
-            client.broadcast.emit('square-updated', square);
+            console.log(square);
+            var newUser = { "socketId" : client.id, "userId": user._id};
+            // The last argument is to update or create new settings.
+            // Send to the new user the info
+            client.emit('square-info', square, 'set-up');
+            // Send to other users the update of the square
+            client.broadcast.emit('square-info', newUser, 'user-connected');
+
         });
 
         client.on('kaixo', function(data){
@@ -17,7 +24,9 @@ module.exports = function(io){
         });
 
         client.on('disconnect', function() {
-            console.log('User disconnected from the softturret');
+            var leftUser = socketController.eraseUserFromTheSquare(client.id);
+            // Send message to every client to update the connection state to disconnect
+            client.broadcast.emit('square-info', leftUser, 'user-left');
         });
 
 

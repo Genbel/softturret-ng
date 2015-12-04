@@ -38,10 +38,6 @@ define(['app'], function(app){
                     // and set the userlogged
                     } else {
                         widgetsRestfulFactory.setUpWidgetsData(res.data);
-                        /*widgetsRestfulFactory.createWidgetHashMap(res.data.widgets);
-                        widgetsRestfulFactory.config = res.data.widgets;
-                        widgetsRestfulFactory.softUsers = res.data.softUsers;
-                        widgetsRestfulFactory.user = res.data.user;*/
                         data = { "authenticated" : loggedIn };
                     }
                     def.resolve(data);
@@ -54,14 +50,13 @@ define(['app'], function(app){
         };
         
         factory.logout = function () {
-            return $http.post(serviceBase + 'logout').then(
-                function (results) {
-                    var loggedIn = false;
-                    changeAuth(loggedIn);
-                    return loggedIn;
-                }, function(err){
-                    return err;
-                });
+            return $http.post(serviceBase + 'logout').then(function (results) {
+                var loggedIn = false;
+                changeAuth(loggedIn);
+                return loggedIn;
+            }, function(err){
+                return err;
+            });
         };
         
         factory.signup = function(data) {

@@ -14,10 +14,7 @@ define(['app'], function(app){
 
             var vm = this;
 
-            console.log('Controller widget: ' + vm.widget);
-
             vm.addUserInChannel = function(buttonId, widgetId){
-                console.log(widgetId);
                 socket.emit('kaixo', vm.widget);
                 vm.addchanneluser()(buttonId, widgetId);
             };
@@ -28,24 +25,20 @@ define(['app'], function(app){
 
         var link = function(scope, elem, attrs, controller){
 
+            console.log('WidgetId:' + controller.widget);
+
+            scope.$on(scope.widget, function(){
+                console.log('directive get the controller message');
+            });
+
             var widgetId = controller.widget;
-            console.log(scope.$$listeners);
+            //console.log(scope.$$listeners);
 
             function socketInit(){
-                if(scope.$$listeners['kaixo-node']){
-                    console.log('it has listeneers');
-                } else {
-                    console.log('it has not listeners');
-                }
                 socket.forward(widgetId, scope);
                 scope.$on('socket:'+ widgetId, function(){
                     console.log('kaixo node');
                 });
-                if(scope.$$listeners['socket:kaixo-node']){
-                    console.log('it has listeneers');
-                } else {
-                    console.log('it has not listeners');
-                }
             };
 
             socketInit();

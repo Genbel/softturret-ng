@@ -49,16 +49,12 @@ exports.getUserConfiguration = function(req, res){
     User.findOne({ _id: userId }, '-password -salt -_id -created -v').populate('widgets').exec(function(error, userWidgets){
         var widgetsGroups = groupByTypeWidgets(userWidgets);
         //var widgetsHashMap = createConfigurationHashMap(widgetsGroups);
-        User.find({}, '_id username', function(error, usersToken){
-            // @widgets: User widget configuration
-            // @softusers: All the user that are registered in the system
-            // @user: Actual user info
-            res.status(200).json({
-                "authenticated": true,
-                "widgets": widgetsGroups,
-                "softUsers": usersToken,
-                "user": { "username": req.user.username, "_id": userId }
-            });
+        // @widgets: User widget configuration
+        // @user: Actual user info
+        res.status(200).json({
+            "authenticated": true,
+            "widgets": widgetsGroups,
+            "user": { "username": req.user.username, "_id": userId }
         });
     });
 };

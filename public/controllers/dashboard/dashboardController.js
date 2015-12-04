@@ -12,10 +12,8 @@ define(['app'], function(app) {
         var socket = softturretSocketService.socket;
 
         function init() {
+            // Send the user object to the server to register in the socket
             socket.emit('user-connected', widgetsRestfulFactory.user);
-            if(widgetsRestfulFactory.config !== null){
-                vm.smallWidgets = widgetsRestfulFactory.config.small;
-            }
         };
 
         init();
@@ -38,6 +36,31 @@ define(['app'], function(app) {
             });
         };
 
+        //  --------- Set up socket functionality ---------------------
+
+        // Set up socket listener to the scope, like this it will not duplicate the listeners
+        socket.forward('square-info', $scope);
+
+        // Create or update the data structures
+        // @square: square or user info data
+        // @state: user life cycle
+        $scope.$on('socket:square-info', function(event, square, state){
+            // Create new hash table for connected users
+            if(widgetsRestfulFactory.config !== null){
+                // The user just logged so it has to set up the configuration
+                if(state === 'set-up'){
+                    // Initiate all the data structures ready to start
+                    widgetsRestfulFactory.addConnectStateToWidgets(square);
+                    vm.smallWidgets = widgetsRestfulFactory.config.small;
+                // The user get the notification(state) that one user it has logged or left
+                } else {
+                    //$scope.$broadcast('kaixo');
+                    widgetsRestfulFactory.updateWidgetConfiguration(square, state);
+                }
+
+            }
+        });
+
         // --------- Set up methods related with the scope of the controller -----------
 
         $scope.$on('$destroy', function(){
@@ -46,13 +69,6 @@ define(['app'], function(app) {
 
         $scope.$on('user-config-updated', function(event, args){
             vm.smallWidgets = args;
-        });
-
-        //  --------- Set up socket functionality ---------------------
-
-        socket.on('square-updated', function(square){
-            console.log('square-updated');
-            console.log(square);
         });
     };
 
