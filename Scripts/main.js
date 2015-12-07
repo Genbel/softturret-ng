@@ -14,7 +14,8 @@ require(
         'services/widgetsRestfulService',
         'lib/webrtc-adapter/adapter',
         'directives/wcAngularOverlay',
-        'views/dashboard/directives/small/small.core'
+        'views/dashboard/directives/small/small.core',
+        'views/dashboard/directives/buttons/buttons.core'
     ],
     function () {
         angular.bootstrap(document, ['softturret']);

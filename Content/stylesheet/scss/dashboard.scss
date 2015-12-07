@@ -1,5 +1,8 @@
 .channel {
   display: flex;
+  & .connected{
+    background-color: $dial-button-connected;
+  }
 }
 .btn-add-widget {
     @include panel-control-buttons($add-widget-color, 150px, 10px, black);}
@@ -29,7 +32,10 @@
   display: table-cell;
   text-align: left;
   vertical-align: middle;
-  color: white;
+  color: $dial-button-text;
+  .connected & {
+    color: $dial-button-text-connected;
+  }
 }
 
 .margin-left{

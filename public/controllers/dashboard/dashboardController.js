@@ -76,3 +76,5 @@ define(['app'], function(app) {
 
     app.register.controller('DashboardController', DashboardController);
 });
+
+/*onsole.log(elem(elem[0].querySelectorAll("[data-id='564da36fe801c57c031756d3']")).attr("class","connected"));*/

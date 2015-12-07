@@ -14,6 +14,8 @@ define(['app'], function(app){
 
             var vm = this;
 
+            vm.buttons = vm.datasource.buttons;
+
             vm.addUserInChannel = function(buttonId, widgetId){
                 socket.emit('kaixo', vm.widget);
                 vm.addchanneluser()(buttonId, widgetId);
@@ -26,6 +28,35 @@ define(['app'], function(app){
         var link = function(scope, elem, attrs, controller){
 
             console.log('WidgetId:' + controller.widget);
+
+            //564da36fe801c57c031756d3
+            /*elem.on('click', function(e){
+                console.log(angular.element(elem[0].querySelectorAll("[data-id='564da36fe801c57c031756d3']")).addClass("connected"));
+                console.log(angular.element(elem[0].querySelectorAll("[data-id='564da36fe801c57c031756d3'] > .light")).addClass("blink-red"));
+            })*/
+
+            /*elem.on('click', function(e){
+                //console.log(angular.element(elem[0].querySelectorAll(".widget-btn")));
+                console.log(elem[0].querySelector('.widget-btn'));
+                //console.log(angular.element(elem[0].getElementsByClassName('.widget-btn')));
+                angular.element(elem[0].querySelectorAll('.widget-btn')).on('click', function(){
+                    console.log('click clik querySelector');
+                });
+            });*/
+            angular.element(elem[0].querySelectorAll('.widget-btn')).on('click', function(){
+                console.log('click');
+            });
+
+            /*elem[0].getElementk');
+            });*/
+
+            /*var by = elem[0].getElementsByClassName('widget-btn');
+            console.log(angular.element('div'));*/
+
+            /*angular.element(elem[0].querySelectorAll('.widget-btn')).on('click', function(){
+                console.log('click querySelector');
+            });*/
+
 
             scope.$on(scope.widget, function(){
                 console.log('directive get the controller message');
@@ -52,7 +83,7 @@ define(['app'], function(app){
 
 
         return {
-            restrict: 'EA',
+            restrict: 'AE',
             controller: controller,
             // Our controller $scope will change for vm
             controllerAs: 'vm',
@@ -64,8 +95,8 @@ define(['app'], function(app){
                 widget: '@'
             },
             bindToController: true,
+            templateUrl: '/angular-js/views/dashboard/directives/small/small.template.html',
             link: link,
-            templateUrl: '/angular-js/views/dashboard/directives/small/small.template.html'
         }
 
 

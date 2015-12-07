@@ -42,7 +42,13 @@ define(['app'], function(app) {
                     var userId = null;
                     var username = null;
                     // Get the user list for the widgets service
-                    $scope.userList = widgetsRestfulFactory.softUsers;
+                    $scope.userList = {
+                        0: {"_id" : "564da352e801c57c031756d2", "username" : "Keith"},
+                        1: {"_id" : "564da36fe801c57c031756d3", "username" : "Linute"},
+                        2: {"_id" : "564da38ae801c57c031756d4", "username" : "Aita"},
+                        3: {"_id" : "564da39de801c57c031756d5", "username" : "Ama"},
+                        4: {"_id" : "564da330e801c57c031756d1", "username" : "Oier"}
+                    };
                     // Get the user _id to add user
                     $scope.getUserId = function(){
                         userId = this.user._id;

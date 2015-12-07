@@ -40,6 +40,8 @@ $single-channel-widget-color: #4369F6;*/
 
 .channel {
   display: flex; }
+  .channel .connected {
+    background-color: #46575B; }
 
 .btn-add-widget {
   background-color: #16C069;
@@ -49,7 +51,7 @@ $single-channel-widget-color: #4369F6;*/
   font-weight: bold; }
 
 .widget-btn {
-  background-color: #888484;
+  background-color: #A7A7A7;
   width: 150px;
   margin: 10px;
   color: black;
@@ -58,7 +60,7 @@ $single-channel-widget-color: #4369F6;*/
   border-radius: 10px;
   height: 60px;
   display: table;
-  border: solid 1px #888484;
+  border: solid 1px #A7A7A7;
   transition: all 0.2s;
   border-bottom: 5px solid #434242;
   transition: all 0.1s;
@@ -117,7 +119,9 @@ $single-channel-widget-color: #4369F6;*/
   display: table-cell;
   text-align: left;
   vertical-align: middle;
-  color: white; }
+  color: black; }
+  .connected .channel-info {
+    color: white; }
 
 .margin-left {
   margin-left: auto; }

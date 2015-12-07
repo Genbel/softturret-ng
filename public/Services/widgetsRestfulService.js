@@ -51,14 +51,15 @@ define(['app'], function(app){
                 _.each(widgets, function(widget, widgetId){
                     _.each(widget.buttons, function(button, index){
                         var userId = button.userId;
-                        var online = 0;
+                        var online = '';
                         if(square[userId]){
-                            online = 1;
+                            online = 'connected';
                         }
                         factory.config[type][widgetId].buttons[index].online = online;
                     })
                 });
             });
+            console.log(this.config);
         };
 
         // Update all system data structures
@@ -66,11 +67,11 @@ define(['app'], function(app){
         // @state: What kind of action we have to apply to the user
         factory.updateWidgetConfiguration = function(user, state){
 
-            var online = 0;
+            var online = '';
 
             if(state === "user-connected"){
                 this.softUsers[user.userId] = { "socketId" : user.socketId };
-                online = 1;
+                online = 'connected';
             } else {
                 delete this.softUsers[user.userId];
             }
