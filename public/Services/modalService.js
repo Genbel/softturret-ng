@@ -60,7 +60,7 @@ define(['app'], function(app) {
                     $scope.modalOptions.accept = function () {
 
                         widgetsRestfulFactory.attachUserToChannel(widgetId, buttonId, userId, username).then(function(){
-                            var editedConfig = editWidgetConfig(widgetId, buttonId, userId, username, widgetsRestfulFactory.config.small);
+                            var editedConfig = editWidgetConfig(widgetId, buttonId, userId, username, widgetsRestfulFactory.config.small, widgetsRestfulFactory.softUsers);
                             $rootScope.$broadcast('user-config-updated', editedConfig);
                             $uibModalInstance.close('ok');
                         },function(error){
@@ -85,7 +85,7 @@ define(['app'], function(app) {
     app.service('modalService', modalService);
 
     // Instead of bring all the configuration again from the database, we will make changes locally
-    var editWidgetConfig = function(widgetId, buttonId, userId, username, smallWidgets) {
+    var editWidgetConfig = function(widgetId, buttonId, userId, username, smallWidgets, softUsers) {
 
         for(var i=0; i < smallWidgets.length;i++) {
             if(smallWidgets[i]._id === widgetId){
@@ -93,6 +93,12 @@ define(['app'], function(app) {
                     if(smallWidgets[i].buttons[j]._id == buttonId) {
                         smallWidgets[i].buttons[j].username = username;
                         smallWidgets[i].buttons[j].userId = userId;
+                        smallWidgets[i].buttons[j].online = null;
+                        // Check if the user is connected
+                        if(softUsers[userId]){
+                            smallWidgets[i].buttons[j].online = 'connected';
+                        }
+
                     }
                 }
             }

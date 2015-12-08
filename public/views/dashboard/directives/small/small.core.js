@@ -2,77 +2,49 @@
 
 define(['app'], function(app){
 
-    var injectParams = ['softturretSocketService'];
+    var injectParams = ['softturretSocketService', '$timeout'];
 
-    var smallWidgetDirective = function(softturretSocketService){
+    var smallWidgetDirective = function(softturretSocketService, $timeout){
 
         var socket = softturretSocketService.socket;
 
-        var controller = function(){
-
-
+        var controller = ['$scope', function ($scope) {
 
             var vm = this;
 
             vm.buttons = vm.datasource.buttons;
 
+            var widgetId = vm.widgetId;
+
+            // Store all the sockets events in the scope
+
+            vm.mouseDownEvent = function(bEnd){
+                socket.emit('small-widget-mouse-down', bEnd);
+            };
+
+            vm.mouseUpEvent = function(bEnd){
+                socket.emit('small-widget-mouse-up', bEnd);
+            };
+
             vm.addUserInChannel = function(buttonId, widgetId){
-                socket.emit('kaixo', vm.widget);
                 vm.addchanneluser()(buttonId, widgetId);
             };
 
 
 
-        };
+        }];
 
         var link = function(scope, elem, attrs, controller){
 
-            console.log('WidgetId:' + controller.widget);
-
-            //564da36fe801c57c031756d3
-            /*elem.on('click', function(e){
-                console.log(angular.element(elem[0].querySelectorAll("[data-id='564da36fe801c57c031756d3']")).addClass("connected"));
-                console.log(angular.element(elem[0].querySelectorAll("[data-id='564da36fe801c57c031756d3'] > .light")).addClass("blink-red"));
-            })*/
-
-            /*elem.on('click', function(e){
-                //console.log(angular.element(elem[0].querySelectorAll(".widget-btn")));
-                console.log(elem[0].querySelector('.widget-btn'));
-                //console.log(angular.element(elem[0].getElementsByClassName('.widget-btn')));
-                angular.element(elem[0].querySelectorAll('.widget-btn')).on('click', function(){
-                    console.log('click clik querySelector');
-                });
-            });*/
-            angular.element(elem[0].querySelectorAll('.widget-btn')).on('click', function(){
-                console.log('click');
-            });
-
-            /*elem[0].getElementk');
-            });*/
-
-            /*var by = elem[0].getElementsByClassName('widget-btn');
-            console.log(angular.element('div'));*/
-
-            /*angular.element(elem[0].querySelectorAll('.widget-btn')).on('click', function(){
-                console.log('click querySelector');
-            });*/
-
-
-            scope.$on(scope.widget, function(){
-                console.log('directive get the controller message');
-            });
-
             var widgetId = controller.widget;
-            //console.log(scope.$$listeners);
 
-            function socketInit(){
-                socket.forward(widgetId, scope);
-                scope.$on('socket:'+ widgetId, function(){
-                    console.log('kaixo node');
-                });
-            };
-
-            socketInit();
+            scope.$on(widgetId, function(event, data, state){
+                if(state == "speak-in"){
+                    angular.element(elem[0].querySelectorAll("[data-id='" + data + "'] > .light")).addClass("blink-red");
+                } else {
+                    angular.element(elem[0].querySelectorAll("[data-id='" + data + "'] > .light")).removeClass("blink-red");
+                }
+            });
 
             /*scope.$on('$destroy', function (event){
                 socket.removeAllListeners();

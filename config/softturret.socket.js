@@ -23,6 +23,20 @@ module.exports = function(io){
             client.emit(data);
         });
 
+        // Event on the small widgets when the user mouse down: Talk
+        // @bEnd: With whom wants to speak to user
+        client.on('small-widget-mouse-down', function(bEnd){
+            var data = socketController.getConnectionData(bEnd, client.id);
+            io.to(data.bEndSocketId).emit('blink-red', data.aEndUserId, 'speak-in');
+        });
+
+        // Event on the small widgets when the user mouse up: Nothing
+        // @bEnd: With whom wants to speak to user
+        client.on('small-widget-mouse-up', function(bEnd){
+            var data = socketController.getConnectionData(bEnd, client.id);
+            io.to(data.bEndSocketId).emit('blink-red', data.aEndUserId, 'speak-off');
+        });
+
         client.on('disconnect', function() {
             var leftUser = socketController.eraseUserFromTheSquare(client.id);
             // Send message to every client to update the connection state to disconnect

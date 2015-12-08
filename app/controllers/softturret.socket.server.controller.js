@@ -24,6 +24,22 @@ exports.eraseUserFromTheSquare = function(socketId){
     return { "socketId" : socketId, "userId": userId};
 }
 
+exports.getConnectionData = function(userId, aEndSocketId){
+    var aEndUserId = null;
+    _.find(square, function(node, index){
+        if(node.socketId === aEndSocketId){
+            aEndUserId = index;
+            // It returns the actual node by default
+            // In that case we need the index so we don't care the return
+            return;
+        }
+    });
+
+    var data = { "bEndSocketId" : square[userId].socketId, "aEndUserId" : aEndUserId };
+
+    return data;
+}
+
 exports.getSquare = function(){
     return square;
 };

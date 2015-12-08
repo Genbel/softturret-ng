@@ -25,7 +25,12 @@ define(['app'], function(app) {
         vm.createSmallWidget = function(){
             widgetsRestfulFactory.createWidget( { type: 'small'} )
                 .then(function(msg){
-                    vm.smallWidgets = msg.data.widgets.small;
+                    //vm.smallWidgets = msg.data.widgets.small;
+                    console.log(msg.data.widgets);
+                    widgetsRestfulFactory.config = msg.data.widgets;
+                    widgetsRestfulFactory.addConnectStateToWidgets(null);
+                    console.log(widgetsRestfulFactory.config.small);
+                    vm.smallWidgets = widgetsRestfulFactory.config.small;
                 });
         };
 
@@ -40,6 +45,7 @@ define(['app'], function(app) {
 
         // Set up socket listener to the scope, like this it will not duplicate the listeners
         socket.forward('square-info', $scope);
+        socket.forward('blink-red', $scope);
 
         // Create or update the data structures
         // @square: square or user info data
@@ -54,10 +60,19 @@ define(['app'], function(app) {
                     vm.smallWidgets = widgetsRestfulFactory.config.small;
                 // The user get the notification(state) that one user it has logged or left
                 } else {
-                    //$scope.$broadcast('kaixo');
                     widgetsRestfulFactory.updateWidgetConfiguration(square, state);
                 }
 
+            }
+        });
+
+        $scope.$on('socket:blink-red', function(event, data, state){
+            if(state === "speak-in" || state === "speak-off"){
+                var userWidgets = widgetsRestfulFactory.userHashMap.get(data);
+                _.each(userWidgets, function(widget){
+                    console.log(widget.widgetId);
+                    $scope.$broadcast(widget.widgetId, data, state);
+                });
             }
         });
 

@@ -18,7 +18,7 @@ exports.addWidget = function(req, res){
 
     //console.log(req.user);
 
-    var userId = '564da330e801c57c031756d1';
+    var userId = req.user._id;
 
     User.findByIdAndUpdate(
         userId,
@@ -27,7 +27,7 @@ exports.addWidget = function(req, res){
         function(err, model) {
             console.log('User updated');
             widget.save(widget, function(callback){
-                User.findOne({ _id: userId }, '-password -salt -_id -created').populate('widgets').exec(function(err,collection){
+                User.findOne({ _id: userId }, '-password -salt -_id -created').populate('widgets').exec(function(err, collection){
                     if(err){
                         //return next(err);
                         console.log(err);

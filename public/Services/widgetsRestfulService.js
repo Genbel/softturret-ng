@@ -7,18 +7,19 @@ define(['app'], function(app){
     var widgetsRestfulFactory = function($rootScope, $http, $q) {
 
         var serviceBase = '/api/dataservice/widget',
-            factory = {
-                // Actual user widget configuration which it will display
-                config: null,
-                // All the users that are connected in the system with their socketId
-                softUsers: null,
-                // All users hashMap
-                userHashMap: null,
-                // Actual user of the softturret
-                user: null
-            };
 
-            factory.setUpWidgetsData = function(data){
+        factory = {
+            // Actual user widget configuration which it will display
+            config: null,
+            // All the users that are connected in the system with their socketId
+            softUsers: null,
+            // All users hashMap
+            userHashMap: null,
+            // Actual user of the softturret
+            user: null
+        };
+
+        factory.setUpWidgetsData = function(data){
             this.userHashMap = configureWidgetsHashMap(data.widgets);
             this.user = data.user;
             this.config = data.widgets;
@@ -45,16 +46,23 @@ define(['app'], function(app){
         // @square: Socket connected users info
         factory.addConnectStateToWidgets = function(square){
 
-            this.softUsers = square;
+            if(square === null){
+                square = this.softUsers;
+            } else {
+                this.softUsers = square;
+            }
+
+            console.log(square);
 
             _.each(this.config, function(widgets, type){
                 _.each(widgets, function(widget, widgetId){
                     _.each(widget.buttons, function(button, index){
                         var userId = button.userId;
-                        var online = '';
+                        var online = null;
                         if(square[userId]){
                             online = 'connected';
                         }
+                        button.username === null? factory.config[type][widgetId].buttons[index].username = "CH " + button.position: void 0;
                         factory.config[type][widgetId].buttons[index].online = online;
                     })
                 });
@@ -67,7 +75,7 @@ define(['app'], function(app){
         // @state: What kind of action we have to apply to the user
         factory.updateWidgetConfiguration = function(user, state){
 
-            var online = '';
+            var online = null;
 
             if(state === "user-connected"){
                 this.softUsers[user.userId] = { "socketId" : user.socketId };
@@ -75,11 +83,10 @@ define(['app'], function(app){
             } else {
                 delete this.softUsers[user.userId];
             }
-            console.log(this.softUsers);
             var userButtons = this.userHashMap.get(user.userId);
             _.each(userButtons, function(button){
                 factory.config[button.type][button.widgetIndex].buttons[button.buttonIndex].online = online;
-                $rootScope.$broadcast(button.widgetId);
+                //$rootScope.$broadcast(button.widgetId);
             });
         };
 

@@ -1,4 +1,4 @@
-<!--
+<!-- odd or even
 <div class="col-md-6" data-ng-repeat="button in vm.datasource.buttons">
     <div data-ng-if="button.position %2 == 1">
         <div class="channel">
@@ -32,11 +32,15 @@
 
 <div class="col-md-6" >
     <div class="channel">
-        <div class="widget-btn {{vm.buttons[0].online}}" data-id="{{vm.buttons[0].userId}}">
+        <div data-ng-if="vm.buttons[0].online != null" class="widget-btn {{vm.buttons[0].online}}" data-id="{{vm.buttons[0].userId}}" data-ng-mousedown="vm.mouseDownEvent(vm.buttons[0].userId)" data-ng-mouseup="vm.mouseUpEvent(vm.buttons[0].userId)">
             <span class="light"></span>
-            <span data-ng-if="vm.buttons[0].username != null" class="channel-info">{{vm.buttons[0].username}}</span>
-            <span data-ng-if="vm.buttons[0].username == null" class="channel-info">CH {{vm.buttons[0].position}}</span>
+            <span class="channel-info">{{vm.buttons[0].username}}</span>
         </div>
+        <div data-ng-if="vm.buttons[0].online == null" class="widget-btn">
+            <span class="light off"></span>
+            <span class="channel-info">{{vm.buttons[0].username}}</span>
+        </div>
+
         <div class="channel-details margin-left">
             <div class="btn-add-user" ng-click="vm.addUserInChannel(vm.buttons[0]._id, vm.datasource._id)">
                 <span class="no-user"><i class="fa fa-plus"></i></span>
@@ -51,10 +55,13 @@
                 <span class="no-user"><i class="fa fa-plus"></i></span>
             </div>
         </div>
-        <div class="widget-btn {{vm.buttons[1].online}} margin-left" data-id="{{vm.buttons[1].userId}}">
+        <div data-ng-if="vm.buttons[1].online != null" class="widget-btn {{vm.buttons[1].online}}" data-id="{{vm.buttons[1].userId}}" data-ng-mousedown="vm.mouseDownEvent(vm.buttons[1].userId)" data-ng-mouseup="vm.mouseUpEvent(vm.buttons[1].userId)">
             <span class="light"></span>
-            <span data-ng-if="vm.buttons[1].username != null" class="channel-info">{{vm.buttons[1].username}}</span>
-            <span data-ng-if="vm.buttons[1].username == null" class="channel-info">CH {{vm.buttons[1].position}}</span>
+            <span class="channel-info">{{vm.buttons[1].username}}</span>
+        </div>
+        <div data-ng-if="vm.buttons[1].online == null" class="widget-btn">
+            <span class="light"></span>
+            <span class="channel-info">{{vm.buttons[1].username}}</span>
         </div>
     </div>
 </div>
