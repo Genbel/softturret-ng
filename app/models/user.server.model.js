@@ -3,22 +3,14 @@
 
 // Charge moongose module
 var mongoose = require('mongoose'),
-    crypto = require('crypto');
+    CryptoJS = require('crypto-js');
 
 // Charge Scheme Object
 var Schema = mongoose.Schema;
 
 // Define new 'UserSchema'
 var UserSchema = new Schema({
-    
-    company: {
-        type: String,
-        unique:true
-    },
-    email:{ 
-        type: String,
-        match: [/.+\@.+\..+/, "Please fill a valid e-mail address"]
-    },
+
     username: {
         type: String,
         unique: true,
@@ -34,6 +26,17 @@ var UserSchema = new Schema({
                 return password && password.length > 6;
             },
         ]
+    },
+    istremerid: {
+        type: Number
+    },
+    /*company: {
+        type: String
+    },*/
+    email:{ 
+        type: String,
+        match: [/.+\@.+\..+/, "Please fill a valid e-mail address"],
+        unique:true
     },
     // To make the hash of our password
     salt: {
@@ -59,14 +62,35 @@ UserSchema.pre('save', function(next) {
 });
 
 // Create the password hash string
-UserSchema.methods.hashPassword = function(password) {
-    return crypto.pbkdf2Sync(password, this.salt, 1000, 64).toString('base64');
+UserSchema.methods.hashPassword = function(password, dbSalt) {
+
+    var iterations = 1000;
+    // sizes must be a multiple of 32
+    var keySize = 256;
+    var ivSize = 128;
+    //var salt = CryptoJS.lib.WordArray.random(128/8);
+
+    var output = CryptoJS.PBKDF2(password, dbSalt, {
+        keySize: (keySize+ivSize)/32,
+        iterations: iterations
+    });
+
+    // the underlying words arrays might have more content than was asked: remove insignificant words
+    output.clamp();
+
+    // split key and IV
+    var key = CryptoJS.lib.WordArray.create(output.words.slice(0, keySize/32));
+    //var iv = CryptoJS.lib.WordArray.create(output.words.slice(keySize/32));
+
+    key = key.toString(CryptoJS.enc.Base64);
+
+    return key;
 };
 
 // Authenticate the user
 UserSchema.methods.authenticate = function(password) {
     // 'this' is the object that it calls to that function
-    return this.password === this.hashPassword(password);
+    return this.password === this.hashPassword(password, this.salt);
 };
 
 // 

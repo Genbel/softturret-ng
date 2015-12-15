@@ -53,7 +53,6 @@ exports.login = function(req, res, next){
                 return next(err);
             }
             // Send back the message
-            console.log("logIn");
             next();
         });
     })(req, res, next);

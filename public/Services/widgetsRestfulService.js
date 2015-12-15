@@ -51,7 +51,6 @@ define(['app'], function(app){
             } else {
                 this.softUsers = square;
             }
-
             console.log(square);
 
             _.each(this.config, function(widgets, type){
