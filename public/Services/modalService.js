@@ -14,8 +14,8 @@ define(['app'], function(app) {
         };
 
         var modalOptions = {
-            closeButtonText: 'Close',
-            actionButtonText: 'OK',
+            closeButtonText: 'Cancel',
+            actionButtonText: 'Add',
             headerText: 'Incoming call',
             bodyText: 'Perform this action?'
         };
@@ -26,7 +26,7 @@ define(['app'], function(app) {
             return this.show(customModalDefaults, customModalOptions);
         };
 
-        this.show = function (customModalDefaults, customModalOptions, buttonId, widgetId) {
+        this.show = function (customModalDefaults, customModalOptions) {
             //Create temp objects to work with since we're in a singleton service
             var tempModalDefaults = {};
             var tempModalOptions = {};
@@ -38,41 +38,28 @@ define(['app'], function(app) {
             angular.extend(tempModalOptions, modalOptions, customModalOptions);
 
             if (!tempModalDefaults.controller) {
-                tempModalDefaults.controller = function ($scope, $rootScope, $uibModalInstance, widgetsRestfulFactory) {
-                    var userId = null;
-                    var username = null;
-                    // Get the user list for the widgets service
-                    $scope.userList = {
-                        0: {"_id" : "564da352e801c57c031756d2", "username" : "Keith"},
-                        1: {"_id" : "564da36fe801c57c031756d3", "username" : "Linute"},
-                        2: {"_id" : "564da38ae801c57c031756d4", "username" : "Aita"},
-                        3: {"_id" : "564da39de801c57c031756d5", "username" : "Ama"},
-                        4: {"_id" : "564da330e801c57c031756d1", "username" : "Oier"}
-                    };
-                    // Get the user _id to add user
-                    $scope.getUserId = function(){
-                        userId = this.user._id;
-                        username = this.user.username;
-                    };
+                tempModalDefaults.controller = function ($scope, $uibModalInstance, widgetsRestfulFactory) {
+
+                    $scope.widgetName = null;
+
                     // Set up the button actions
                     $scope.modalOptions = tempModalOptions;
 
                     $scope.modalOptions.accept = function () {
-
-                        widgetsRestfulFactory.attachUserToChannel(widgetId, buttonId, userId, username).then(function(){
-                            var editedConfig = editWidgetConfig(widgetId, buttonId, userId, username, widgetsRestfulFactory.config.small, widgetsRestfulFactory.softUsers);
-                            $rootScope.$broadcast('user-config-updated', editedConfig);
-                            $uibModalInstance.close('ok');
-                        },function(error){
-                            console.log(error);
-                        });
+                        widgetsRestfulFactory.createWidget( { widgetSize: 8, name: $scope.widgetName} )
+                            .then(function(msg){
+                                widgetsRestfulFactory.config = msg.data.widgets;
+                                widgetsRestfulFactory.addConnectStateToWidgets(null);
+                                $uibModalInstance.close('ok');
+                            });
                     };
+
                     $scope.modalOptions.reject = function () {
                         $uibModalInstance.close('cancel');
                     };
                 };
 
-                tempModalDefaults.controller.$inject = ['$scope', '$rootScope', '$uibModalInstance', 'widgetsRestfulFactory'];
+                tempModalDefaults.controller.$inject = ['$scope', '$uibModalInstance', 'widgetsRestfulFactory'];
             }
 
             return $uibModal.open(tempModalDefaults).result;
@@ -85,7 +72,7 @@ define(['app'], function(app) {
     app.service('modalService', modalService);
 
     // Instead of bring all the configuration again from the database, we will make changes locally
-    var editWidgetConfig = function(widgetId, buttonId, userId, username, smallWidgets, softUsers) {
+    /*var editWidgetConfig = function(widgetId, buttonId, userId, username, smallWidgets, softUsers) {
 
         for(var i=0; i < smallWidgets.length;i++) {
             if(smallWidgets[i]._id === widgetId){
@@ -104,5 +91,5 @@ define(['app'], function(app) {
             }
         }
         return smallWidgets;
-    };
+    };*/
 });

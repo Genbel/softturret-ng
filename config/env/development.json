@@ -3,16 +3,24 @@
         "secretToken": "o@:&M<ZN PF(s.T)3?*;^1~TDjNE}=3xy$SpB7dE%dA-}fAn.b[RRU{cg+P#[):/"
     },
     "db": {
+        "host": "ds043714.mongolab.com",
         "username": "pbxadmin",
         "password": "LabyrintH",
-        "host": "ds043714.mongolab.com",
         "port": "43714",
         "dbName": "softturret"
+    },
+    "mySQLdb": {
+        "host": "localhost",
+        "username": "root",
+        "password": "root",
+        "port": 8888,
+        "dbName": "tva_prod",
+        "socketPath": "/Applications/MAMP/tmp/mysql/mysql.sock"
     },
     "server": {
         "enableHTTPS": true,
         "schema": "https",
-        "domain": "192.168.0.2",
+        "domain": "192.168.0.10",
         "httpPort": 8080,
         "httpsPort": 443
     },
@@ -23,4 +31,3 @@
         "certificateAuthority": ""
     }
 }
-

@@ -23,6 +23,8 @@ var WidgetSchema = new Schema({
 
     type: String,
 
+    name: String,
+
     buttons: [ ButtonSchema ]
 });
 

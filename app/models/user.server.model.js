@@ -19,7 +19,7 @@ var UserSchema = new Schema({
         trim: true
     },
     password: {
-        type:String,
+        type: String,
         // Validate password length
         validate: [
             function(password) {
@@ -27,12 +27,9 @@ var UserSchema = new Schema({
             },
         ]
     },
-    istremerid: {
+    circuitId: {
         type: Number
     },
-    /*company: {
-        type: String
-    },*/
     email:{ 
         type: String,
         match: [/.+\@.+\..+/, "Please fill a valid e-mail address"],

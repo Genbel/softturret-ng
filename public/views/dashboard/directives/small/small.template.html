@@ -8,18 +8,12 @@
                 <span data-ng-if="button.username == null" class="channel-info">CH {{button.position}}</span>
             </div>
             <div class="channel-details margin-left">
-                <div class="btn-add-user" ng-click="vm.addUserInChannel(button._id, vm.datasource._id)">
-                    <span class="no-user"><i class="fa fa-plus"></i></span>
-                </div>
             </div>
         </div>
     </div>
     <div data-ng-if="button.position %2 == 0">
         <div class="channel">
             <div class="channel-details">
-                <div class="btn-add-user" ng-click="vm.addUserInChannel(button._id, vm.datasource._id)">
-                    <span class="no-user"><i class="fa fa-plus"></i></span>
-                </div>
             </div>
             <div class="widget-btn {{button.online}} margin-left" data-id="{{button.userId}}">
                 <span class="light"></span>

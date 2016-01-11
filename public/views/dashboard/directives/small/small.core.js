@@ -2,9 +2,9 @@
 
 define(['app'], function(app){
 
-    var injectParams = ['softturretSocketService', '$timeout'];
+    var injectParams = ['softturretSocketService'];
 
-    var smallWidgetDirective = function(softturretSocketService, $timeout){
+    var smallWidgetDirective = function(softturretSocketService){
 
         var socket = softturretSocketService.socket;
 
@@ -24,10 +24,6 @@ define(['app'], function(app){
 
             vm.mouseUpEvent = function(bEnd){
                 socket.emit('small-widget-mouse-up', bEnd);
-            };
-
-            vm.addUserInChannel = function(buttonId, widgetId){
-                vm.addchanneluser()(buttonId, widgetId);
             };
 
 
@@ -63,7 +59,6 @@ define(['app'], function(app){
             scope: {
                 // After the configuration our datasource is accesible in the vm.datasource
                 datasource: '=',
-                addchanneluser: '&',
                 widget: '@'
             },
             bindToController: true,

@@ -86,6 +86,7 @@ module.exports = function(config) {
     app.use('/angular-js', express.static('./public'));
     app.use('/content', express.static('./Content'));
     app.use('/root', express.static('./'));
+
     var thisObj = {
         server: server,
         app: app,

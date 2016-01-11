@@ -1,13 +1,8 @@
 <div class="modal-dialog">
     <div class="modal-body">
         <div class="row">
-            <div class="col-md-12" data-ng-repeat="user in userList track by user._id">
-                <div class="col-md-10">
-                    <h5>{{user.username}}</h5>
-                </div>
-                <div class="col-md-2">
-                    <button class="btn" data-ng-click="getUserId()">Add</button>
-                </div>
+            <div class="col-md-12">
+                <input type="text" data-ng-model="widgetName" placeholder="Type you widget name"/>
             </div>
         </div>
         <div class="row">

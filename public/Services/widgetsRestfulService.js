@@ -25,9 +25,9 @@ define(['app'], function(app){
             this.config = data.widgets;
         };
 
-        factory.createWidget = function(type){
+        factory.createWidget = function(data){
             var defer = $q.defer();
-            $http.post(serviceBase + '/create', type)
+            $http.post(serviceBase + '/create', data)
 
                 .then(function(res) {
 
@@ -87,19 +87,6 @@ define(['app'], function(app){
                 factory.config[button.type][button.widgetIndex].buttons[button.buttonIndex].online = online;
                 //$rootScope.$broadcast(button.widgetId);
             });
-        };
-
-        // Add new user in the widget channel
-        factory.attachUserToChannel = function(widgetId, buttonId, userId, username) {
-            var defer = $q.defer();
-            var info = {"widgetId" : widgetId, "buttonId" : buttonId, "userId" : userId, "username" : username};
-            $http.post(serviceBase + '/add/user', info)
-                .then(function(){
-                    defer.resolve();
-                },function(error) {
-                    defer.reject(error);
-                });
-            return defer.promise;
         };
 
         return factory;

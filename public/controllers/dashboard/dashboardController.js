@@ -23,22 +23,22 @@ define(['app'], function(app) {
         //  --------- Set up controller functions---------------------
 
         vm.createSmallWidget = function(){
-            widgetsRestfulFactory.createWidget( { type: 'small'} )
-                .then(function(msg){
-                    //vm.smallWidgets = msg.data.widgets.small;
-                    console.log(msg.data.widgets);
-                    widgetsRestfulFactory.config = msg.data.widgets;
-                    widgetsRestfulFactory.addConnectStateToWidgets(null);
-                    console.log(widgetsRestfulFactory.config.small);
-                    vm.smallWidgets = widgetsRestfulFactory.config.small;
-                });
-        };
-
-        vm.addUser = function(buttonId, widgetId){
-            modalService.show({},{}, buttonId, widgetId).then(function(result) {
+            modalService.show({},{}).then(function(result) {
                 if (result === 'ok') {
+                    vm.smallWidgets = widgetsRestfulFactory.config.small;
                 }
             });
+            /*widgetsRestfulFactory.createWidget( { type: 'small'} )
+                .then(function(msg){
+                    //vm.smallWidgets = msg.data.widgets.small;
+                    widgetsRestfulFactory.config = msg.data.widgets;
+                    widgetsRestfulFactory.addConnectStateToWidgets(null);
+                    vm.smallWidgets = widgetsRestfulFactory.config.small;
+                });*/
+        };
+
+        vm.addUser = function(){
+
         };
 
         //  --------- Set up socket functionality ---------------------
@@ -82,9 +82,9 @@ define(['app'], function(app) {
             socket.removeListener();
         });
 
-        $scope.$on('user-config-updated', function(event, args){
+        /*$scope.$on('user-config-updated', function(event, args){
             vm.smallWidgets = args;
-        });
+        });*/
     };
 
     DashboardController.$inject = injectParams;

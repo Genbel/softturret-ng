@@ -4,4 +4,8 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var server = require('./config/server');
 
-var server = server();
+var app = server();
+
+module.exports = function(){
+    return app;
+}
