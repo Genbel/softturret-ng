@@ -18,7 +18,7 @@ exports.addWidget = function(req, res){
     var newWidgetButtons = createNewWidget(widgetSize);
 
     var widget = new Widget({
-        widgetSize: widgetSize,
+        type: getWidgetType(widgetSize),
         name: req.body.name,
         buttons: newWidgetButtons
     });
@@ -34,7 +34,7 @@ exports.addWidget = function(req, res){
             console.error('error connecting: ' + err.stack);
         } else {
             connectionInstance = connection;
-            var values  = { RealWidgetID: widget._id, UserID: userId, Username: req.user.username, WidgetName: req.body.name, CreatedDate: new Date() };
+            var values  = { RealWidgetID: widget._id, UserID: userId, WidgetName: req.body.name, CreatedDate: new Date() };
             connection.query('INSERT INTO Widgets SET ?', values, function(err, result) {
                 if(err){
                     console.log(err);
@@ -44,7 +44,25 @@ exports.addWidget = function(req, res){
                         circuitId = userData.circuitId;
                         connection.query('SELECT C.AsterixServerID FROM Circuits as C WHERE C.CircuitID = ' + circuitId, function(err, circuitData){
                             asterixServerId = circuitData[0].AsterixServerID;
-                            addWidgetInfoInTheTva(tvaWidgetId, asterixServerId, circuitId, widgetSize);
+                            // Save information in the tva database
+                            addWidgetInfoInTheTva(tvaWidgetId, asterixServerId, circuitId, widgetSize, widget, userId);
+                            // Save information in the softturret database
+                            User.findByIdAndUpdate(
+                                userId,
+                                { $push: { widgets: widget._id }},
+                                { safe: true, upsert: true },
+                                function(err, model) {
+                                    widget.save(widget, function(callback){
+                                        User.findOne({ _id: userId }, '-password -salt -_id -created').populate('widgets').exec(function(err, collection){
+                                            if(err){
+                                                return next(err);
+                                            }
+                                            var widgetsGroups = groupByTypeWidgets(collection);
+                                            res.status(200).json({ "widgets": widgetsGroups});
+                                        });
+                                    });
+                                }
+                            );
                         });
                     });
                 }
@@ -52,23 +70,7 @@ exports.addWidget = function(req, res){
         }
     });
 
-    User.findByIdAndUpdate(
-        userId,
-        { $push: { widgets: widget._id }},
-        { safe: true, upsert: true },
-        function(err, model) {
-            widget.save(widget, function(callback){
-                User.findOne({ _id: userId }, '-password -salt -_id -created').populate('widgets').exec(function(err, collection){
-                    if(err){
-                        return next(err);
-                    }
-                    var widgetsGroups = groupByTypeWidgets(collection);
-                    res.status(200).json({ "widgets": widgetsGroups});
-                });
-            });
 
-        }
-    );
 };
 
 // Get user configuration of the softurret
@@ -92,7 +94,6 @@ exports.getUserConfiguration = function(req, res){
 var addWidgetInfoInTheTva = function(tvaWidgetId, asterixServerId, circuitId, widgetSize){
     createNewDialPlan(tvaWidgetId, asterixServerId, circuitId).then(function(newDialPlanId){
         createNewChannelAndItsDialPlanEnds(circuitId, newDialPlanId, widgetSize).then(function(){
-            console.log('ENTER IN THE LAST THEN');
             connectionInstance.release();
             connectionInstance = null;
         });
@@ -159,10 +160,14 @@ var createNewWidget = function(widgetSize) {
     _.times(widgetSize, function(n){
 
         var button = new Button({
-            "position"  : n + 1,
-            "private"   : false,
-            "username"  : null,
-            "userId"    : null
+            "position"          : n + 1,
+            "private"           : true,
+            "username"          : null,
+            "remoteUserId"      : null,
+            "remoteUserType"    : null,
+            "licenceId"         : null,
+            "dirNo"             : null,
+            "tag"               : null
         });
         channels.push(button);
     });
@@ -172,15 +177,15 @@ var createNewWidget = function(widgetSize) {
 
 };
 
-/*// Get the number of channels that has to create depending of type of widget
-var calculateTotalChannel = function(type) {
+// Get the number of channels that has to create depending of type of widget
+var getWidgetType = function(type) {
 
     switch (type){
-        case 'small':
-            return 8;
-        case 'big':
-            return 16;
-        case 'smallGroup':
-            return 8;
+        case 8:
+            return 'small';
+        case 16:
+            return 'big';
+        case 2:
+            return 'smallGroup';
     }
-};*/
+};

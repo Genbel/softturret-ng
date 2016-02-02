@@ -70,26 +70,4 @@ define(['app'], function(app) {
     modalService.$inject = injectParams;
     
     app.service('modalService', modalService);
-
-    // Instead of bring all the configuration again from the database, we will make changes locally
-    /*var editWidgetConfig = function(widgetId, buttonId, userId, username, smallWidgets, softUsers) {
-
-        for(var i=0; i < smallWidgets.length;i++) {
-            if(smallWidgets[i]._id === widgetId){
-                for(var j = 0; j < smallWidgets[i].buttons.length; j++) {
-                    if(smallWidgets[i].buttons[j]._id == buttonId) {
-                        smallWidgets[i].buttons[j].username = username;
-                        smallWidgets[i].buttons[j].userId = userId;
-                        smallWidgets[i].buttons[j].online = null;
-                        // Check if the user is connected
-                        if(softUsers[userId]){
-                            smallWidgets[i].buttons[j].online = 'connected';
-                        }
-
-                    }
-                }
-            }
-        }
-        return smallWidgets;
-    };*/
 });

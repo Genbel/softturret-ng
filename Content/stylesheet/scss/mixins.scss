@@ -1,9 +1,9 @@
 @mixin main-button-mixin($background-color, $width, $margin, $color){
   background-color: $background-color;
-  width: $width;
+  width: 100%;
   margin: $margin;
   color: $color;
-  font-weight: bold;
+  font-weight: 500;
 }
 
 @mixin panel-control-buttons($background-color, $width, $margin, $color) {
@@ -28,7 +28,7 @@
   transition: all 0.1s;
   -webkit-transition: all 0.1s;
   position:relative;
-  &:active{
+  &.push{
     transform: translate(0px,5px);
     -webkit-transform: translate(0px,5px);
     border-bottom: 1px solid;

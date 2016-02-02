@@ -25,17 +25,18 @@ module.exports = function(io){
 
         // Event on the small widgets when the user mouse down: Talk
         // @bEnd: With whom wants to speak to user
-        client.on('small-widget-mouse-down', function(bEnd){
-            var data = socketController.getConnectionData(bEnd, client.id);
-            io.to(data.bEndSocketId).emit('blink-red', data.aEndUserId, 'speak-in');
+        client.on('remote-peer-lighting', function(talkToken){
+            var data = socketController.getConnectionData(talkToken.remoteEndId, client.id);
+            talkToken["remoteEndId"] = data.aEndUserId;
+            io.to(data.bEndSocketId).emit('blink', talkToken);
         });
 
         // Event on the small widgets when the user mouse up: Nothing
         // @bEnd: With whom wants to speak to user
-        client.on('small-widget-mouse-up', function(bEnd){
+        /*client.on('small-widget-mouse-up', function(bEnd){
             var data = socketController.getConnectionData(bEnd, client.id);
             io.to(data.bEndSocketId).emit('blink-red', data.aEndUserId, 'speak-off');
-        });
+        });*/
 
         client.on('disconnect', function() {
             var leftUser = socketController.eraseUserFromTheSquare(client.id);

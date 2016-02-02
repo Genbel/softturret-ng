@@ -1,61 +1,14 @@
-<!--odd or even-->
 <div class="col-md-6" data-ng-repeat="button in vm.datasource.buttons">
-    <div data-ng-if="button.position %2 == 1">
-        <div class="channel">
-            <div class="widget-btn {{button.online}}" data-id="{{button.userId}}">
-                <span class="light"></span>
-                <span data-ng-if="button.username != null" class="channel-info">{{button.username}}</span>
-                <span data-ng-if="button.username == null" class="channel-info">CH {{button.position}}</span>
-            </div>
-            <div class="channel-details margin-left">
-            </div>
-        </div>
-    </div>
-    <div data-ng-if="button.position %2 == 0">
-        <div class="channel">
-            <div class="channel-details">
-            </div>
-            <div class="widget-btn {{button.online}} margin-left" data-id="{{button.userId}}">
-                <span class="light"></span>
-                <span data-ng-if="button.username != null" class="channel-info">{{button.username}}</span>
-                <span data-ng-if="button.username == null" class="channel-info">CH {{button.position}}</span>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--<div class="col-md-6" >
     <div class="channel">
-        <div data-ng-if="vm.buttons[0].online != null" class="widget-btn {{vm.buttons[0].online}}" data-id="{{vm.buttons[0].userId}}" data-ng-mousedown="vm.mouseDownEvent(vm.buttons[0].userId)" data-ng-mouseup="vm.mouseUpEvent(vm.buttons[0].userId)">
+        <div data-ng-if="button.online != null" class="widget-btn {{button.online}}" data-id="{{button.licenceId}}" data-ng-click="vm.talk(button.position)">
             <span class="light"></span>
-            <span class="channel-info">{{vm.buttons[0].username}}</span>
-        </div>
-        <div data-ng-if="vm.buttons[0].online == null" class="widget-btn">
-            <span class="light off"></span>
-            <span class="channel-info">{{vm.buttons[0].username}}</span>
+            <span class="channel-info">{{button.tag}}</span>
         </div>
 
-        <div class="channel-details margin-left">
-            <div class="btn-add-user" ng-click="vm.addUserInChannel(vm.buttons[0]._id, vm.datasource._id)">
-                <span class="no-user"><i class="fa fa-plus"></i></span>
-            </div>
+        <div data-ng-if="button.online == null" class="widget-btn">
+            <span class="light"></span>
+            <span class="channel-info">{{button.tag}}</span>
         </div>
+
     </div>
 </div>
-<div>
-    <div class="channel">
-        <div class="channel-details">
-            <div class="btn-add-user" ng-click="vm.addUserInChannel(vm.buttons[1]._id, vm.datasource._id)">
-                <span class="no-user"><i class="fa fa-plus"></i></span>
-            </div>
-        </div>
-        <div data-ng-if="vm.buttons[1].online != null" class="widget-btn {{vm.buttons[1].online}}" data-id="{{vm.buttons[1].userId}}" data-ng-mousedown="vm.mouseDownEvent(vm.buttons[1].userId)" data-ng-mouseup="vm.mouseUpEvent(vm.buttons[1].userId)">
-            <span class="light"></span>
-            <span class="channel-info">{{vm.buttons[1].username}}</span>
-        </div>
-        <div data-ng-if="vm.buttons[1].online == null" class="widget-btn">
-            <span class="light"></span>
-            <span class="channel-info">{{vm.buttons[1].username}}</span>
-        </div>
-    </div>
-</div>-->

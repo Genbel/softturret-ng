@@ -15,7 +15,15 @@ var ButtonSchema = new Schema({
 
     username: String,
 
-    userId: Schema.Types.ObjectId
+    remoteUserId: Schema.Types.ObjectId,
+
+    remoteUserType: String,
+
+    licenceId: Number,
+
+    remoteDirNo: Number,
+
+    tag: String
 });
 
 // Define new 'WidgetSchema'
