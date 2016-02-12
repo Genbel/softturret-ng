@@ -5,7 +5,6 @@ var Widget  = require('mongoose').model('Widget'),
     Button  = require('mongoose').model('Button'),
     Q       = require('q'),
     _       = require('underscore'),
-    HashMap = require('hashmap'),
     server  = require('../../softturret'),
     connectionInstance = null;
 
@@ -15,54 +14,67 @@ exports.addWidget = function(req, res){
 
     var widgetSize = req.body.widgetSize;
 
+    var poolConnection = server().mysqlPooldb;
+
     var newWidgetButtons = createNewWidget(widgetSize);
 
-    var widget = new Widget({
+    var widgetObject = {
         type: getWidgetType(widgetSize),
         name: req.body.name,
         buttons: newWidgetButtons
-    });
+    };
+
+    var widget = new Widget(widgetObject);
 
     var tvaWidgetId = null;
     var circuitId = null;
     var asterixServerId = null;
 
-    var poolConnection = server().mysqlPooldb;
-
+    // Get the connection
     poolConnection.getConnection(function(err, connection) {
         if (err) {
             console.error('error connecting: ' + err.stack);
         } else {
             connectionInstance = connection;
+
             var values  = { RealWidgetID: widget._id, UserID: userId, WidgetName: req.body.name, CreatedDate: new Date() };
+
             connection.query('INSERT INTO Widgets SET ?', values, function(err, result) {
+
                 if(err){
                     console.log(err);
                 }else {
                     tvaWidgetId = result.insertId;
+
                     User.findById(userId, function(err, userData){
+
                         circuitId = userData.circuitId;
+
                         connection.query('SELECT C.AsterixServerID FROM Circuits as C WHERE C.CircuitID = ' + circuitId, function(err, circuitData){
+
                             asterixServerId = circuitData[0].AsterixServerID;
-                            // Save information in the tva database
-                            addWidgetInfoInTheTva(tvaWidgetId, asterixServerId, circuitId, widgetSize, widget, userId);
-                            // Save information in the softturret database
-                            User.findByIdAndUpdate(
-                                userId,
-                                { $push: { widgets: widget._id }},
-                                { safe: true, upsert: true },
-                                function(err, model) {
-                                    widget.save(widget, function(callback){
-                                        User.findOne({ _id: userId }, '-password -salt -_id -created').populate('widgets').exec(function(err, collection){
-                                            if(err){
-                                                return next(err);
-                                            }
-                                            var widgetsGroups = groupByTypeWidgets(collection);
-                                            res.status(200).json({ "widgets": widgetsGroups});
+
+                            connection.query('SELECT COUNT(CH.ChannelID) AS softAmount FROM Channels AS CH INNER JOIN Circuits As C ON CH.CircuitID = C.CircuitID WHERE C.CircuitID = ' + circuitId, function (err, result) {
+                                // Get the amount of soft channels
+                                var softChannels = Number(result[0].softAmount);
+                                // Save information in the tva database
+                                addWidgetInfoInTheTva(tvaWidgetId, asterixServerId, circuitId, widgetSize, softChannels);
+                                // Save information in the softturret database
+                                User.findByIdAndUpdate(
+                                    userId, { $push: { widgets: widget._id }}, { safe: true, upsert: true },
+                                    function(err, model) {
+                                        widget.save(widget, function(callback){
+                                            User.findOne({ _id: userId }, '-password -salt -_id -created').populate('widgets').exec(function(err, collection){
+                                                if(err){
+                                                    return next(err);
+                                                }
+                                                var widgetsGroups = groupByTypeWidgets(collection);
+                                                res.status(200).json({ "widgets": widgetsGroups});
+                                            });
                                         });
-                                    });
-                                }
-                            );
+                                    }
+                                );
+                            });
                         });
                     });
                 }
@@ -91,9 +103,9 @@ exports.getUserConfiguration = function(req, res){
     });
 };
 
-var addWidgetInfoInTheTva = function(tvaWidgetId, asterixServerId, circuitId, widgetSize){
+var addWidgetInfoInTheTva = function(tvaWidgetId, asterixServerId, circuitId, widgetSize, softChannels){
     createNewDialPlan(tvaWidgetId, asterixServerId, circuitId).then(function(newDialPlanId){
-        createNewChannelAndItsDialPlanEnds(circuitId, newDialPlanId, widgetSize).then(function(){
+        createNewChannelAndItsDialPlanEnds(circuitId, newDialPlanId, widgetSize, softChannels).then(function(){
             connectionInstance.release();
             connectionInstance = null;
         });
@@ -118,12 +130,18 @@ var createNewDialPlan = function(tvaWidgetId, asterixServerId, circuitId){
     return widgetActionDeferred.promise;
 };
 
-var createNewChannelAndItsDialPlanEnds = function(circuitId, newDialPlanId, widgetSize){
+var createNewChannelAndItsDialPlanEnds = function(circuitId, newDialPlanId, widgetSize, softChannels){
 
     var channelAndDialPlanEndsDeferred = Q.defer();
 
     _.times(widgetSize, function(n){
-        var insertDataChannel = { CircuitID: circuitId, ChannelTypeID: 0, Number: n + 1, CreatedDate: new Date(), Version: 0.2 };
+        // We add +100000 because this is the softturret dirNo starts
+        var dirNo = 100000 + softChannels + n;
+        // We add +120000 because this is the softturret sipName starts
+        var sipName = 120000 + softChannels + n;
+
+        var insertDataChannel = { CircuitID: circuitId, ChannelTypeID: 0, Number: n + 1, ChannelDirNo: dirNo, ChannelSipName: sipName, CreatedDate: new Date(), Version: 0.2 };
+
         connectionInstance.query('INSERT INTO Channels SET ?', insertDataChannel, function(err, channelResult){
             if(!err){
                 console.log("Channel Added");
@@ -153,8 +171,6 @@ var groupByTypeWidgets = function(widgets){
 // Create new map of the buttons that are in the widget
 var createNewWidget = function(widgetSize) {
 
-    //var total = calculateTotalChannel(type);
-
     var channels = [];
 
     _.times(widgetSize, function(n){
@@ -166,9 +182,10 @@ var createNewWidget = function(widgetSize) {
             "remoteUserId"      : null,
             "remoteUserType"    : null,
             "licenceId"         : null,
-            "dirNo"             : null,
+            "remoteDirNo"       : null,
             "tag"               : null
         });
+
         channels.push(button);
     });
 
